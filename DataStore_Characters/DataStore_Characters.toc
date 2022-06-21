@@ -1,4 +1,4 @@
-## Interface: 90205
+## Interface: 20504
 ## Title: DataStore_Characters
 ## Notes: Stores information about characters (race, level, etc..)
 ## Author: Thaoky (EU-Marécages de Zangar)
