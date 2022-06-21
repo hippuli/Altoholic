@@ -1,0 +1,89 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="Options.lua"></Script>
+
+	<Frame name="DataStoreMailOptions" hidden="true">
+		<Size x="615" y="306" />
+		<KeyValues>
+			<KeyValue key="module" value="DataStore_Mails" />
+		</KeyValues>
+		<Frames>
+			<Slider name="$parent_SliderMailExpiry" inherits="OptionsSliderTemplate"  minValue="1" maxValue="15" defaultValue="5" valueStep="1">
+				<Size x="180" y="16" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="40" y="-40" />
+				</Anchors>
+				<Scripts>
+					<OnValueChanged>
+						local L = LibStub("AceLocale-3.0"):GetLocale("DataStore_Mails")
+						
+						local name = self:GetName()
+						local value = math.floor(self:GetValue())
+						_G[name .. "Text"]:SetText(L["EXPIRY_CHECK_LABEL"] .. " (" .. value ..")");
+						DataStore:SetOption("DataStore_Mails", "MailWarningThreshold", value)
+					</OnValueChanged>
+				</Scripts>
+			</Slider>
+
+			<CheckButton parentKey="CheckMailExpiry" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parent_SliderMailExpiry" relativePoint="BOTTOMLEFT" x="0" y="-20" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="CheckMailExpiry" />
+					<KeyValue key="locLabel" value="EXPIRY_CHECK_LABEL" />
+					<KeyValue key="locTitle" value="EXPIRY_CHECK_TITLE" />
+					<KeyValue key="locEnabled" value="EXPIRY_CHECK_ENABLED" />
+					<KeyValue key="locDisabled" value="EXPIRY_CHECK_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+			<CheckButton parentKey="ReportExpiredMailsToChat" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOP" relativeKey="$parent.CheckMailExpiry" relativePoint="BOTTOM" x="0" y="-10" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="ReportExpiredMailsToChat" />
+					<KeyValue key="locLabel" value="REPORT_EXPIRED_MAILS_LABEL" />
+					<KeyValue key="locTitle" value="REPORT_EXPIRED_MAILS_TITLE" />
+					<KeyValue key="locEnabled" value="REPORT_EXPIRED_MAILS_ENABLED" />
+					<KeyValue key="locDisabled" value="REPORT_EXPIRED_MAILS_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+			<CheckButton parentKey="ScanMailBody" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOP" relativeKey="$parent.ReportExpiredMailsToChat" relativePoint="BOTTOM" x="0" y="-10" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="ScanMailBody" />
+					<KeyValue key="locLabel" value="SCAN_MAIL_BODY_LABEL" />
+					<KeyValue key="locTitle" value="SCAN_MAIL_BODY_TITLE" />
+					<KeyValue key="locEnabled" value="SCAN_MAIL_BODY_ENABLED" />
+					<KeyValue key="locDisabled" value="SCAN_MAIL_BODY_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+			<CheckButton parentKey="CheckMailExpiryAllAccounts" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOP" relativeKey="$parent.ScanMailBody" relativePoint="BOTTOM" x="0" y="-10" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="CheckMailExpiryAllAccounts" />
+					<KeyValue key="locLabel" value="EXPIRY_ALL_ACCOUNTS_LABEL" />
+					<KeyValue key="locTitle" value="EXPIRY_ALL_ACCOUNTS_TITLE" />
+					<KeyValue key="locEnabled" value="EXPIRY_ALL_ACCOUNTS_ENABLED" />
+					<KeyValue key="locDisabled" value="EXPIRY_ALL_ACCOUNTS_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+			<CheckButton parentKey="CheckMailExpiryAllRealms" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOP" relativeKey="$parent.CheckMailExpiryAllAccounts" relativePoint="BOTTOM" x="0" y="-10" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="CheckMailExpiryAllRealms" />
+					<KeyValue key="locLabel" value="EXPIRY_ALL_REALMS_LABEL" />
+					<KeyValue key="locTitle" value="EXPIRY_ALL_REALMS_TITLE" />
+					<KeyValue key="locEnabled" value="EXPIRY_ALL_REALMS_ENABLED" />
+					<KeyValue key="locDisabled" value="EXPIRY_ALL_REALMS_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+		</Frames>
+	</Frame>
+</Ui>

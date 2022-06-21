@@ -1,0 +1,77 @@
+------------------------------------------------------------------------
+r30 | thaokyaltoholic | 2019-06-30 06:52:36 +0000 (Sun, 30 Jun 2019) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.toc
+
+8.2.001 Commit
+------------------------------------------------------------------------
+r29 | thaoky.altoholic@yahoo.com | 2018-08-12 13:14:36 +0000 (Sun, 12 Aug 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+
+Fixed scanning of calendar events.
+------------------------------------------------------------------------
+r28 | thaoky.altoholic@yahoo.com | 2018-07-24 17:46:30 +0000 (Tue, 24 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+
+Fixed a Lua error
+------------------------------------------------------------------------
+r27 | thaoky.altoholic@yahoo.com | 2018-07-22 11:19:01 +0000 (Sun, 22 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+   M /trunk/DataStore_Agenda.toc
+
+8.0.001 Commit
+------------------------------------------------------------------------
+r26 | thaoky.altoholic@yahoo.com | 2017-09-04 17:26:45 +0000 (Mon, 04 Sep 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+   M /trunk/DataStore_Agenda.toc
+
+Scanning info about challenge mode
+------------------------------------------------------------------------
+r25 | thaoky.altoholic@yahoo.com | 2017-03-29 19:19:24 +0000 (Wed, 29 Mar 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.toc
+
+TOC Update
+------------------------------------------------------------------------
+r24 | thaoky | 2016-10-26 17:47:05 +0000 (Wed, 26 Oct 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.toc
+
+TOC Update
+------------------------------------------------------------------------
+r23 | thaoky | 2016-07-18 16:07:48 +0000 (Mon, 18 Jul 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.toc
+
+7.0 Compatibility Release
+------------------------------------------------------------------------
+r22 | thaoky | 2015-08-17 16:18:24 +0000 (Mon, 17 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.toc
+
+TOC Update
+------------------------------------------------------------------------
+r21 | thaoky | 2015-02-25 18:22:17 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/DataStore_Agenda.toc
+
+6.1.001 Commit
+------------------------------------------------------------------------
+r20 | thaoky | 2015-01-09 17:01:50 +0000 (Fri, 09 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+
+- Fixed ClearExpiredDungeons()
+------------------------------------------------------------------------
+r19 | thaoky | 2014-12-27 13:09:17 +0000 (Sat, 27 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+
+Fixed ClearExpiredDungeons()
+------------------------------------------------------------------------
+

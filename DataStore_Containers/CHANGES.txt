@@ -1,0 +1,81 @@
+------------------------------------------------------------------------
+r60 | thaokyaltoholic | 2019-06-30 06:53:07 +0000 (Sun, 30 Jun 2019) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.toc
+
+8.2.001 Commit
+------------------------------------------------------------------------
+r59 | thaoky.altoholic@yahoo.com | 2018-07-24 17:46:14 +0000 (Tue, 24 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.lua
+
+Fixed scanning of bank items
+------------------------------------------------------------------------
+r58 | thaoky.altoholic@yahoo.com | 2018-07-22 11:20:58 +0000 (Sun, 22 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.toc
+
+8.0.001 Commit
+------------------------------------------------------------------------
+r57 | thaoky.altoholic@yahoo.com | 2017-09-04 17:28:14 +0000 (Mon, 04 Sep 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.lua
+   M /trunk/DataStore_Containers.toc
+
+Fixed mythic keystones + battle pet links
+------------------------------------------------------------------------
+r56 | thaoky.altoholic@yahoo.com | 2017-04-28 17:30:35 +0000 (Fri, 28 Apr 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.lua
+
+
+------------------------------------------------------------------------
+r55 | thaoky.altoholic@yahoo.com | 2017-03-29 19:19:50 +0000 (Wed, 29 Mar 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.toc
+
+TOC Update
+------------------------------------------------------------------------
+r54 | thaoky | 2016-10-26 17:48:10 +0000 (Wed, 26 Oct 2016) | 2 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/DataStore_Containers.lua
+   M /trunk/DataStore_Containers.toc
+   D /trunk/embeds.xml
+
+TOC Update
+Removed LibBabble-Inventory
+------------------------------------------------------------------------
+r53 | thaoky | 2016-07-31 14:43:37 +0000 (Sun, 31 Jul 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.lua
+
+Fixed cross-realm support
+------------------------------------------------------------------------
+r52 | thaoky | 2016-07-18 16:08:32 +0000 (Mon, 18 Jul 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.toc
+
+7.0 Compatibility Release
+------------------------------------------------------------------------
+r51 | thaoky | 2015-08-17 16:19:16 +0000 (Mon, 17 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.toc
+
+TOC Update
+------------------------------------------------------------------------
+r50 | thaoky | 2015-04-06 15:42:18 +0000 (Mon, 06 Apr 2015) | 1 line
+Changed paths:
+   M /trunk/DataStore_Containers.lua
+
+Added support for bag rarity
+------------------------------------------------------------------------
+r49 | thaoky | 2015-02-25 18:23:39 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/DataStore_Containers.lua
+   M /trunk/DataStore_Containers.toc
+
+6.1.001 Commit
+------------------------------------------------------------------------
+

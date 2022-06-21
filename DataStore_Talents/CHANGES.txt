@@ -1,0 +1,89 @@
+------------------------------------------------------------------------
+r62 | thaokyaltoholic | 2019-06-30 06:55:57 +0000 (Sun, 30 Jun 2019) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.toc
+
+8.2.001 Commit
+------------------------------------------------------------------------
+r61 | thaoky.altoholic@yahoo.com | 2018-07-22 11:26:33 +0000 (Sun, 22 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+   M /trunk/DataStore_Talents.toc
+
+8.0.001 Commit
+------------------------------------------------------------------------
+r60 | thaoky.altoholic@yahoo.com | 2017-09-04 17:33:35 +0000 (Mon, 04 Sep 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.toc
+
+TOC Update
+------------------------------------------------------------------------
+r59 | thaoky.altoholic@yahoo.com | 2017-04-28 17:35:34 +0000 (Fri, 28 Apr 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+
+Fixed identification of the artifact's name.
+------------------------------------------------------------------------
+r58 | thaoky.altoholic@yahoo.com | 2017-03-29 19:27:48 +0000 (Wed, 29 Mar 2017) | 3 lines
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+   M /trunk/DataStore_Talents.toc
+
+TOC Update
+Fixed a few issues when scanning artifact data.
+Fixed an issue when artifact XP was updated.
+------------------------------------------------------------------------
+r57 | thaoky.altoholic@yahoo.com | 2017-01-12 19:25:08 +0000 (Thu, 12 Jan 2017) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+
+Updated ScanArtifactXP()
+------------------------------------------------------------------------
+r56 | thaoky | 2016-11-09 12:58:56 +0000 (Wed, 09 Nov 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+
+Added support for Artifact Weapons
+------------------------------------------------------------------------
+r55 | thaoky | 2016-10-26 17:55:13 +0000 (Wed, 26 Oct 2016) | 2 lines
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+   M /trunk/DataStore_Talents.toc
+
+TOC Update
+major overhaul to support the new panel. Old functions have obviously been deprecated.
+------------------------------------------------------------------------
+r54 | thaoky | 2016-07-31 14:41:45 +0000 (Sun, 31 Jul 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+
+Fixed GetThisGuild()
+------------------------------------------------------------------------
+r53 | thaoky | 2016-07-27 17:35:53 +0000 (Wed, 27 Jul 2016) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.lua
+
+Rewrote scan of talent info
+------------------------------------------------------------------------
+r52 | thaoky | 2016-07-18 16:12:10 +0000 (Mon, 18 Jul 2016) | 1 line
+Changed paths:
+   D /trunk/Data
+   M /trunk/DataStore_Talents.lua
+   M /trunk/DataStore_Talents.toc
+
+7.0 Compatibility Release
+------------------------------------------------------------------------
+r51 | thaoky | 2015-08-17 16:22:44 +0000 (Mon, 17 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/DataStore_Talents.toc
+
+TOC Update
+------------------------------------------------------------------------
+r50 | thaoky | 2015-02-25 18:30:01 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/DataStore_Talents.toc
+
+6.1.001 Commit
+------------------------------------------------------------------------
+

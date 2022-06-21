@@ -1,0 +1,13 @@
+## Interface: 11403
+## Title: DataStore_Spells
+## Notes: Stores information about character spells
+## Author: Thaoky (EU-Marécages de Zangar)
+## Version: 2022.06.05
+## Dependencies: DataStore
+## OptionalDeps: Ace3
+## SavedVariables: DataStore_SpellsDB
+## X-Category: Interface Enhancements
+## X-Embeds: Ace3
+
+Enum.lua
+DataStore_Spells.lua

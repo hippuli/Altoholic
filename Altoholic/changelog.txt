@@ -1,0 +1,60 @@
+Altoholic Burning Crusade Classic Changelog (dates in dd/mm/yyyy)
+===========================================
+
+
+2.5.008 (05/06/2022)
+
+- Fixed item count not being visible in the tooltip for enchanting reagents.
+- Fixed the tooltip backdrop issue.
+(for reference: changed 2x BackdropTemplate to TooltipBackdropTemplate in Altoholic\Templates\DropDownMenu.xml)
+
+2.5.007 (03/10/2021)
+
+- Fixed an issue that made any recipe tooltip with "Requires [reagents](X)" show as learnable (Thanks Solastus75 !)
+
+2.5.006 (05/09/2021)
+
+- Grids Tab : fixed the tradeskills not being properly listed.
+- Grids Tab : Added Burning Crusade attunements.
+- Guild Tab : guild banks are back, Huuuuge thanks to Kranna for her assistance ! :)
+- Added a tooltip option to display the counter for heartstones or not.
+
+2.5.005 (29/08/2021)
+
+- Fixed characters above 60 not being visible in the account summary.
+
+Reminder : I've seen several reports of errors in DataStore_Crafts, that manifest while making a search, or when a tooltip gets stuck at a vendor.
+You might also get a Lua error that looks like this :
+
+=> bad argument #2 to 'strsplit' (string expected, got table)
+
+Related Curse Issues : 1182, 1253, 1256
+
+This is caused by Saved Variables that have not been cleared after upgrading from Classic to TBC.
+This is a MANDATORY step, and it must happen WHEN THE GAME IS NOT RUNNING !!
+This means cleaning the following files in \WTF\Account\<your_account>\SavedVariables : Altoholic.lua & All DataStore*.lua
+
+
+2.5.004 (20/06/2021)
+
+- Fixed the enchanting profession in the character's tab. Filtering by enchant name now also working.
+
+2.5.003 (07/06/2021)
+
+- Account Summary : Fixed improper level filtering causing alts not to be displayed.
+- Fixed a tooltip issue caused by RAID_CLASS_COLORS not yet being loaded, made it local.
+- Fixed a Lua error in the Skills panel when having to display a skill level higher than the maximum.
+
+2.5.002 (24/05/2021)
+
+- Fixed invisible backdrop in the message box object.
+- Fixed missing Jewelcrafting icon in the Skill panel.
+- Fixed account sharing.
+- DataStore_Talents : fixed and issue when reporting a character's main specialization
+- DataStore_Crafts : fixed the color of enchanting recipes in the skill panel, which were all displayed as orange.
+You must reload the profession once to fix the database entries.
+
+
+2.5.001 (24/05/2021)
+
+- Initial release on Burning Crusade Classic.
