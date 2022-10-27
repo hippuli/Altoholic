@@ -4,8 +4,8 @@ _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "A
 
 local addon = _G[addonName]
 
-addon.Version = "v2.5.008"
-addon.VersionNum = 205008
+addon.Version = "v3.4.001"
+addon.VersionNum = 304001
 
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 local commPrefix = addonName
@@ -79,7 +79,7 @@ local AddonDB_Defaults = {
 			["UI.Tabs.Summary.CurrentFactions"] = 3,							-- 1 = Alliance, 2 = Horde, 3 = Both
 			["UI.Tabs.Summary.CurrentLevels"] = 1,								-- 1 = All
 			["UI.Tabs.Summary.CurrentLevelsMin"] = 1,							
-			["UI.Tabs.Summary.CurrentLevelsMax"] = 70,					
+			["UI.Tabs.Summary.CurrentLevelsMax"] = 80,					
 			["UI.Tabs.Summary.CurrentClasses"] = 0,							-- 0 = All
 			["UI.Tabs.Summary.CurrentTradeSkill"] = 0,						-- 0 = All
 			["UI.Tabs.Summary.SortAscending"] = true,							-- ascending or descending sort order
@@ -361,6 +361,7 @@ local tabList = {
 	"Characters",
 	"Search",
 	"Guild",
+	"Achievements",
 	"Agenda",
 	"Grids",
 }

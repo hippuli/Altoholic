@@ -1,5 +1,5 @@
-## Interface: 20504
-## Title: Altoholic TBC Classic by |cFF69CCF0Thaoky|r
+## Interface: 30400 
+## Title: Altoholic WotLK Classic by |cFF69CCF0Thaoky|r
 ## Title-zhCN: |cffeedd99 [物品] |r: 全角色统计 Altoholic
 
 ## Notes: Provides information about your alts
@@ -9,7 +9,7 @@
 ## Notes-koKR: 부캐들(alts)의 정보들을 제공해 줍니다.
 
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2.5.008
+## Version: 3.4.001
 ## X-Category: Inventory, Tradeskill, Mail
 ## X-Localizations: enUS, frFR, zhCN, zhTW, deDE, koKR, esES, esMX, ruRU
 ## X-Website: http://wow.curse.com/downloads/wow-addons/details/altoholic.aspx

@@ -323,12 +323,14 @@ function addon:GetRecipeOwners(professionName, link, recipeLevel)
 
 			-- Let's try to match on the craft name
 			DataStore:IterateRecipes(profession, 0, function(color, itemID)
-				local itemName
+				local itemName = ""
 
-				if isEnchanting then
-					itemName = GetSpellInfo(itemID) or ""
-				else
-					itemName = GetItemInfo(itemID) or ""
+				if itemID then
+					if isEnchanting then
+						itemName = GetSpellInfo(itemID) or ""
+					else
+						itemName = GetItemInfo(itemID) or ""
+					end
 				end
 				
 				if string.lower(itemName) == string.lower(craftName) then

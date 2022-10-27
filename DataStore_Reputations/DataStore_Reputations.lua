@@ -114,6 +114,32 @@ local factions = {
 	{ id = 989, name = BF["Keepers of Time"] },
 	{ id = 990, name = BF["The Scale of the Sands"] },
 	{ id = 967, name = BF["The Violet Eye"] },
+
+	-- WotLK
+	{ id = 1106, name = BF["Argent Crusade"] },
+	{ id = 1090, name = BF["Kirin Tor"] },
+	{ id = 1073, name = BF["The Kalu'ak"] },
+	{ id = 1091, name = BF["The Wyrmrest Accord"] },
+	{ id = 1098, name = BF["Knights of the Ebon Blade"] },
+	{ id = 1119, name = BF["The Sons of Hodir"] },
+	{ id = 1156, name = BF["The Ashen Verdict"] },
+	{ id = 1037, name = BF["Alliance Vanguard"] },
+	{ id = 1068, name = BF["Explorers' League"] },
+	{ id = 1126, name = BF["The Frostborn"] },
+	{ id = 1094, name = BF["The Silver Covenant"] },
+	{ id = 1050, name = BF["Valiance Expedition"] },
+	{ id = 1052, name = BF["Horde Expedition"] },
+	{ id = 1067, name = BF["The Hand of Vengeance"] },
+	{ id = 1124, name = BF["The Sunreavers"] },
+	{ id = 1064, name = BF["The Taunka"] },
+	{ id = 1085, name = BF["Warsong Offensive"] },
+	{ id = 1104, name = BF["Frenzyheart Tribe"] },
+	{ id = 1105, name = BF["The Oracles"] },
+	{ id = 469, name = BF["Alliance"] },
+	{ id = 67, name = BF["Horde"] },
+	{ id = 1134, name = BF["Gilneas"] },
+	{ id = 1133, name = BF["Bilgewater Cartel"] },
+
 }
 
 local FactionUIDsRev = {}

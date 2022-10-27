@@ -2,6 +2,20 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2022.10.25 (25/10/2022)
+
+- ToC Update for all versions
+
+Version 2022.08.05 (05/08/2022)
+
+- Removed a check that caused a clean of the current alt's data.
+
+Version 2022.08.03 (03/08/2022)
+
+- Renamed the :IterateModules() function to IterateDBModules, as it conflicted with that of AceAddon.
+- Changed the table pointer to use the proper database level. (moduleDB.db.global instead of moduleDB)
+- Added a sanity check in RegisterModule to clean orphan data in sub-modules.
+
 Version 2022.06.05 (05/06/2022)
 
 - ToC Update for all versions

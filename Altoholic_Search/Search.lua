@@ -673,10 +673,12 @@ end
 local function CraftMatchFound(spellID, value, isEnchanting)
 	local name
 	
-	if isEnchanting then
-		name = GetSpellInfo(spellID)
-	else
-		name = GetItemInfo(spellID)
+	if spellID then
+		if isEnchanting then
+			name = GetSpellInfo(spellID)
+		else
+			name = GetItemInfo(spellID)
+		end
 	end
 	
 	if name and string.find(strlower(name), value, 1, true) then

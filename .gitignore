@@ -1,2 +1,3 @@
-*.swp
-.release/
+/.release/
+*_TBC.toc
+*_Vanilla.toc

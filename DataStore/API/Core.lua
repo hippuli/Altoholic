@@ -8,6 +8,7 @@ local registeredModules = {}
 local registeredMethods = {}
 
 local modulesList = {
+	["DataStore_Achievements"] = true,
 	["DataStore_Agenda"] = true,
 	["DataStore_Auctions"] = true,
 	["DataStore_Characters"] = true,
@@ -23,7 +24,6 @@ local modulesList = {
 
 if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 	-- retail, add the remaining modules
-	modulesList["DataStore_Achievements"] = true
 	modulesList["DataStore_Currencies"] = true
 	modulesList["DataStore_Garrisons"] = true
 	modulesList["DataStore_Pets"] = true

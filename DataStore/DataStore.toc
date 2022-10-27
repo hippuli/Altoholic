@@ -1,8 +1,8 @@
-## Interface: 20504
+## Interface: 30400
 ## Title: DataStore by |cFF69CCF0Thaoky|r
 ## Notes: Main DataStore Module
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2022.06.05
+## Version: 2022.10.25
 ## OptionalDeps: Ace3, LibAboutPanel 
 ## SavedVariables: DataStoreDB
 ## X-Embeds: Ace3

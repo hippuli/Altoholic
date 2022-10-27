@@ -1,8 +1,8 @@
-## Interface: 20504
+## Interface: 30400 
 ## Title: Altoholic_Agenda
 ## Notes: Altoholic's Agenda UI
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2.5.008
+## Version: 3.4.001
 ## Dependencies: Altoholic, DataStore, DataStore_Agenda, DataStore_Characters
 ## LoadOnDemand: 1
 ## X-Category: Interface Enhancements

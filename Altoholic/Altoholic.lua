@@ -23,8 +23,8 @@ local function InitLocalization()
 
 	AltoholicFrameTab1:SetText(L["Summary"])
 	AltoholicFrameTab2:SetText(L["Characters"])
-	AltoholicFrameTab5:SetText(L["Agenda"])
-	AltoholicFrameTab6:SetText(L["Grids"])
+	AltoholicFrameTab6:SetText(L["Agenda"])
+	AltoholicFrameTab7:SetText(L["Grids"])
 	
 	AltoAccountSharingName:SetText(L["Account Name"])
 	AltoAccountSharingText1:SetText(L["Send account sharing request to:"])
@@ -329,7 +329,7 @@ function addon:OnEnable()
 	Orig_MerchantFrame_UpdateMerchantInfo = MerchantFrame_UpdateMerchantInfo
 	MerchantFrame_UpdateMerchantInfo = MerchantFrame_UpdateMerchantInfoHook
 	
-	AltoholicFrameName:SetText(format("Altoholic |cFFD6EB00Burning Crusade|r Classic %s%s by %sThaoky", colors.white, addon.Version, colors.classMage))
+	AltoholicFrameName:SetText(format("Altoholic |cFF84B9E8Wrath of the Lich King|r Classic %s%s by %sThaoky", colors.white, addon.Version, colors.classMage))
 
 	local realm = GetRealmName()
 	local player = UnitName("player")

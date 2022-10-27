@@ -30,7 +30,7 @@
 			<OnLoad>
 				self:RegisterForDrag("LeftButton")
 				self.elapsed = 0
-				PanelTemplates_SetNumTabs(self, 6)
+				PanelTemplates_SetNumTabs(self, 7)
 				PanelTemplates_SetTab(self, 1)
 			</OnLoad>
 			<OnDragStart>
@@ -98,9 +98,9 @@
 			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="$parentName" inherits="GameFontNormal" justifyH="CENTER">
-					<Size x="350" y="18" />
+					<Size x="450" y="18" />
 					<Anchors>
-						<Anchor point="TOPLEFT" x="280" y="-16" />
+						<Anchor point="TOPLEFT" x="230" y="-16" />
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSearchLabel" inherits="GameFontNormalSmall">
@@ -145,17 +145,25 @@
 					<KeyValue key="context" value="Guild" />
 				</KeyValues>
 			</Button>
-			<Button name="$parentTab5" inherits="AltoTabTemplate" id="5">
+			<Button name="$parentTab5" inherits="AltoTabTemplate" id="5" text="ACHIEVEMENT_BUTTON">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTab4" relativePoint="TOPRIGHT" x="-8" y="0" />
 				</Anchors>
 				<KeyValues>
-					<KeyValue key="context" value="Agenda" />
+					<KeyValue key="context" value="Achievements" />
 				</KeyValues>
 			</Button>
 			<Button name="$parentTab6" inherits="AltoTabTemplate" id="6">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTab5" relativePoint="TOPRIGHT" x="-8" y="0" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="context" value="Agenda" />
+				</KeyValues>
+			</Button>
+			<Button name="$parentTab7" inherits="AltoTabTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentTab6" relativePoint="TOPRIGHT" x="-8" y="0" />
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="context" value="Grids" />

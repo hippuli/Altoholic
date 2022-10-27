@@ -105,6 +105,40 @@ local Factions = {
 			{ name = DataStore:GetFactionName(967), icon = Texture("Spell_Holy_MindSooth") },		-- "The Violet Eye" 
 		}
 	},
+	{	-- [3]
+		name = EXPANSION_NAME2,	-- "Wrath of the Lich King",
+		{	-- [1]
+			name = GetRealZoneText(571),	-- Northrend
+			{ name = DataStore:GetFactionName(1106), icon = Texture("Achievement_Reputation_ArgentCrusader") },		-- "Argent Crusade"
+			{ name = DataStore:GetFactionName(1090), icon = Texture("Achievement_Reputation_KirinTor") },		-- "Kirin Tor" 
+			{ name = DataStore:GetFactionName(1073), icon = Texture("Achievement_Reputation_Tuskarr") },	-- "The Kalu'ak" 
+			{ name = DataStore:GetFactionName(1091), icon = Texture("Achievement_Reputation_WyrmrestTemple") },		-- "The Wyrmrest Accord" 
+			{ name = DataStore:GetFactionName(1098), icon = Texture("Achievement_Reputation_KnightsoftheEbonBlade") },	-- "Knights of the Ebon Blade" 
+			{ name = DataStore:GetFactionName(1119), icon = Texture("Achievement_Boss_Hodir_01") },		-- "The Sons of Hodir" 
+			{ name = DataStore:GetFactionName(1156), icon = Texture("Achievement_Reputation_ArgentCrusader") },		-- "The Ashen Verdict" 
+		},
+		{	-- [2]
+			name = DataStore:GetFactionName(1037), 	-- "Alliance Vanguard"
+			{ name = DataStore:GetFactionName(1037), icon = Texture("Spell_Misc_HellifrePVPHonorHoldFavor") },	-- "Alliance Vanguard" 
+			{ name = DataStore:GetFactionName(1068), icon = Texture("Achievement_Zone_HowlingFjord_02") },	-- "Explorers' League" 
+			{ name = DataStore:GetFactionName(1126), icon = Texture("Achievement_Zone_StormPeaks_01") },		-- "The Frostborn" 
+			{ name = DataStore:GetFactionName(1094), icon = Texture("Achievement_Zone_CrystalSong_01") },		-- "The Silver Covenant" 
+			{ name = DataStore:GetFactionName(1050), icon = Texture("Achievement_Zone_BoreanTundra_01") },	-- "Valiance Expedition" 	
+		},
+		{	-- [3]
+			name = DataStore:GetFactionName(1052), 	-- "Horde Expedition"
+			{ name = DataStore:GetFactionName(1052), icon = Texture("Spell_Misc_HellifrePVPThrallmarFavor") },		-- "Horde Expedition" 
+			{ name = DataStore:GetFactionName(1067), icon = Texture("Achievement_Zone_HowlingFjord_02") },		-- "The Hand of Vengeance" 
+			{ name = DataStore:GetFactionName(1124), icon = Texture("Achievement_Zone_CrystalSong_01") },			-- "The Sunreavers" 
+			{ name = DataStore:GetFactionName(1064), icon = Texture("Achievement_Zone_BoreanTundra_02") },		-- "The Taunka" 
+			{ name = DataStore:GetFactionName(1085), icon = Texture("Achievement_Zone_BoreanTundra_03") },		-- "Warsong Offensive" 
+		},
+		{	-- [4]
+			name = C_Map.GetMapInfo(119).name,	-- "Sholazar Basin"
+			{ name = DataStore:GetFactionName(1104), icon = Texture("Ability_Mount_WhiteDireWolf") },		-- "Frenzyheart Tribe" 
+			{ name = DataStore:GetFactionName(1105), icon = Texture("Achievement_Reputation_MurlocOracle") },	-- "The Oracles" 
+		},		
+	},
 }
 
 local CAT_ALLINONE = #Factions + 1
