@@ -2,6 +2,7 @@ package-as: Altoholic
 
 move-folders:
  Altoholic/Altoholic: Altoholic
+ Altoholic/Altoholic_Achievements: Altoholic_Achievements
  Altoholic/Altoholic_Agenda: Altoholic_Agenda
  Altoholic/Altoholic_Characters: Altoholic_Characters
  Altoholic/Altoholic_Grids: Altoholic_Grids
@@ -9,6 +10,7 @@ move-folders:
  Altoholic/Altoholic_Search: Altoholic_Search
  Altoholic/Altoholic_Summary: Altoholic_Summary
  Altoholic/DataStore: DataStore
+ Altoholic/DataStore_Achievements: DataStore_Achievements
  Altoholic/DataStore_Agenda: DataStore_Agenda
  Altoholic/DataStore_Auctions: DataStore_Auctions
  Altoholic/DataStore_Characters: DataStore_Characters
