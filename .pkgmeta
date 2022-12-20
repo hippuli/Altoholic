@@ -16,6 +16,7 @@ move-folders:
  Altoholic/DataStore_Characters: DataStore_Characters
  Altoholic/DataStore_Containers: DataStore_Containers
  Altoholic/DataStore_Crafts: DataStore_Crafts
+ Altoholic/DataStore_Currencies: DataStore_Currencies
  Altoholic/DataStore_Inventory: DataStore_Inventory
  Altoholic/DataStore_Mails: DataStore_Mails
  Altoholic/DataStore_Quests: DataStore_Quests

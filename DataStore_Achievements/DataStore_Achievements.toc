@@ -1,4 +1,4 @@
-## Interface: 100002
+## Interface: 30400
 ## Title: DataStore_Achievements
 ## Notes: Stores information about character achievements
 ## Author: Thaoky (EU-Marécages de Zangar)
