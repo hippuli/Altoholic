@@ -117,9 +117,18 @@
 					<KeyValue key="iconFile" value="Interface\Icons\inv_misc_key_11" />
 				</KeyValues>
 			</Button>
-			<Button parentKey="Dungeons" inherits="AltoTabGridsMenuIconTemplate" id="7" hidden="true">
+			<Button parentKey="Tokens" inherits="AltoTabGridsMenuIconTemplate" id="7">
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" relativeTo="AltoholicTabGrids" relativePoint="BOTTOMLEFT" x="30" y="200" />
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent.Keys" relativePoint="BOTTOMRIGHT" x="5" y="0" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="iconFile" value="Interface\Icons\Spell_Holy_SummonChampion" />
+					<KeyValue key="text" value="CURRENCY" type="global" />
+				</KeyValues>
+			</Button>
+			<Button parentKey="Dungeons" inherits="AltoTabGridsMenuIconTemplate" id="8" hidden="true">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent.Tokens" relativePoint="BOTTOMRIGHT" x="5" y="0" />
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="iconFile" value="Interface\Icons\inv_helmet_189" />

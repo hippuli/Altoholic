@@ -178,6 +178,7 @@ local function GetCharacterItemCount(character, searchedID)
 	itemCounts[5] = DataStore:GetAuctionHouseItemCount(character, searchedID)
 	itemCounts[6] = DataStore:GetInventoryItemCount(character, searchedID)
 	itemCounts[7] = DataStore:GetMailItemCount(character, searchedID)
+	itemCounts[8] = DataStore:GetCurrencyItemCount(character, searchedID)
 	
 	local charCount = 0
 	for _, v in pairs(itemCounts) do
@@ -550,12 +551,12 @@ local function Hook_SetCurrencyToken(self,index,...)
 	local characters = DataStore:HashValueToSortedArray(DataStore:GetCharacters())
 	
 	for _, character in pairs(characters) do
-		local _, _, count = DataStore:GetCurrencyInfoByName(character, currency)
+		local count = DataStore:GetCurrencyInfoByName(character, currency)
+		
 		if count and count > 0 then
 			GameTooltip:AddDoubleLine(DataStore:GetColoredCharacterName(character),  colors.teal .. count);
 			total = total + count
 		end
-		
 	end
 	
 	if total > 0 then

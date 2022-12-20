@@ -22,7 +22,11 @@ local modulesList = {
 	["DataStore_Talents"] = true
 }
 
-if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+if WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC then
+	-- Add wrath modules
+	modulesList["DataStore_Currencies"] = true
+
+elseif WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 	-- retail, add the remaining modules
 	modulesList["DataStore_Currencies"] = true
 	modulesList["DataStore_Garrisons"] = true
@@ -132,15 +136,22 @@ function addon:RegisterModule(moduleName, module, publicMethods, allowOverrides)
 		}
 	end
 
-	-- automatically clean orphan data in child modules (ie: data exist for a char/guild in a sub module, but no key in the main module)
-	-- needs fixing ! test with empty sv files to reproduce
-	-- for charKey, _ in pairs(db.Characters) do
-
+	-- Automatically clean orphan data in child modules (ie: data exist for a char/guild in a sub module, but no key in the main module)
+	--	Tested and fixed with empty sv files on 5/08/2022
+	local Characters = addon.db.global.Characters
+	
+	for charKey, _ in pairs(db.Characters) do
 		-- if the key is not valid in the main module, kill the data
+		
+		-- 5/08/22 : There's an issue with the test on the faction
+		-- check if it is really necessary, in any case, this second test often succeeds (when it should not) 
+		-- because the sequence of events is not guaranteed, thus the faction is not available
+		
 		-- if not Characters[charKey] or not Characters[charKey].faction then
-			-- db.Characters[charKey] = nil
-		-- end
-	-- end
+		if not Characters[charKey] then
+			db.Characters[charKey] = nil
+		end
+	end
 end
 
 
@@ -209,9 +220,10 @@ function addon:IsModuleEnabled(name)
 	end
 end
 
-function addon:IterateModules(callback)
+-- Warning: AceAddon already has a :IterateModules..
+function addon:IterateDBModules(callback)
 	for moduleName, moduleDB in pairs(registeredModules) do
-		callback(moduleDB, moduleName)
+		callback(moduleDB.db.global, moduleName)
 	end
 end
 
@@ -270,7 +282,7 @@ function addon:ImportCharacter(key, faction, guild)
 
 	-- Ensure a key is created for every module, even those which were not imported. 
 	-- Required for proper UI support without extra validation of every method
-	addon:IterateModules(function(moduleDB) 
+	addon:IterateDBModules(function(moduleDB) 
 		if moduleDB.Characters then
 			moduleDB.Characters[key].lastUpdate = time()
 		end

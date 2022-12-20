@@ -13,39 +13,41 @@ enum.AchievementCategories = {
 	CharacterLevel = -1,
 	CharacterMoney = -2,
 	CharacterRiding = -3,
-	
+
 	Quests = 96,
 	QuestsCompleted = -4,
 	QuestsDaily = -5,
 	QuestsWorld = -6,
 	QuestsDungeon = -7,
-	
+
 	QuestsEasternKingdoms = 14861,
-	QuestsKalimdor	= 15081,
-	QuestsOutland	= 14862,
-	QuestsNorthrend	= 14863,
+	QuestsKalimdor = 15081,
+	QuestsOutland = 14862,
+	QuestsNorthrend = 14863,
 	QuestsCataclysm = 15070,
-	QuestsPandaria	= 15110,
+	QuestsPandaria = 15110,
 	QuestsDraenor = 15220,
 	QuestsLegion = 15252,
 	QuestsBfA = 15284,
 	QuestsShadowlands = 15422,
 	QuestsShadowlands92 = -98,
-	
+	QuestsDragonflight = 15455,
+
 	Exploration = 97,
 	ExplorationExplorer = -8,
 	ExplorationEasternKingdoms = 14777,
-	ExplorationKalimdor	= 14778,
-	ExplorationOutland	= 14779,
-	ExplorationNorthrend	= 14780,
+	ExplorationKalimdor = 14778,
+	ExplorationOutland = 14779,
+	ExplorationNorthrend = 14780,
 	ExplorationCataclysm = 15069,
-	ExplorationPandaria	= 15113,
+	ExplorationPandaria = 15113,
 	ExplorationDraenor = 15235,
 	ExplorationLegion = 15257,
 	ExplorationBfA = 15298,
 	ExplorationShadowlands = 15436,
 	ExplorationShadowlands92 = -99,
-	
+	ExplorationDragonflight = 15465,
+
 	PvP = 95,
 	PvPHonorableKills = -9,
 	PvPKills = -10,
@@ -67,13 +69,13 @@ enum.AchievementCategories = {
 	PvPTempleOfKotmogu = 15163,
 	PvPSeethingShore = 15292,
 	PvPDeepwindGorge = 15218,
-	
-	Dungeons	= 168,
+
+	Dungeons = 168,
 	DungeonHero = 12,
 	DungeonGloryHero = 13,
 	DungeonGloryRaider = 14,
 	DungeonsOther = 19,
-	
+
 	DungeonsClassic = 14808,
 	DungeonsBurningCrusade = 14805,
 	DungeonsLichKing = 14806,
@@ -83,10 +85,11 @@ enum.AchievementCategories = {
 	DungeonsLegion = 15254,
 	DungeonsBfA = 15285,
 	DungeonsShadowlands = 15428,
-	
+	DungeonsDragonflight = 15467,
+
 	RaidsClassic = 20,
 	RaidsBurningCrusade = 21,
-	
+
 	RaidsLichKing = 14922,
 	RaidsLichKingVaultOfArchavon = -109,
 	RaidsLichKingNaxxramas = -106,
@@ -97,44 +100,49 @@ enum.AchievementCategories = {
 	RaidsLichKingOnyxiasLair = -112,
 	RaidsLichKingIcecrownCitadel = -113,
 	RaidsLichKingRubySanctum = -114,
-	
+
 	RaidsCataclysm = 15068,
 	RaidsCataclysmBlackwingDescent = -115,
 	RaidsCataclysmBastionOfTwilight = -116,
 	RaidsCataclysmThroneOfTheFourWinds = -117,
 	RaidsCataclysmFirelands = -118,
 	RaidsCataclysmDragonSoul = -119,
-	
+
 	RaidsPandaria = 15107,
 	RaidsPandariaMoguShanVaults = -120,
 	RaidsPandariaHeartOfFear = -121,
 	RaidsPandariaTerraceOfEndlessSpring = -122,
 	RaidsPandariaThroneOfThunder = -123,
 	RaidsPandariaSiegeOfOrgrimmar = -124,
-	
+
 	RaidsDraenor = 15231,
 	RaidsDraenorHighmaul = -125,
 	RaidsDraenorBlackrockFoundry = -126,
 	RaidsDraenorHellfireCitadel = -127,
-	
+
 	RaidsLegion = 15255,
 	RaidsLegionEmeraldNightmare = -101,
 	RaidsLegionTrialOfValor = -102,
 	RaidsLegionNighthold = -103,
 	RaidsLegionTombOfSargeras = -104,
 	RaidsLegionAntorus = -105,
-	
+
 	RaidsBfA = 15286,
 	RaidsBfAUldir = -128,
 	RaidsBfABattleOfDazaralor = -129,
 	RaidsBfACrucibleOfStorms = -130,
 	RaidsBfAEternalPalace = -131,
 	RaidsBfANyalotha = -132,
-	
+
 	RaidsShadowlands = 15438,
 	RaidsShadowlandsCastleNathria = -100,
 	RaidsShadowlandsSanctumOfDomination = -133,
 	RaidsShadowlandsSepulcherOfTheFirstOnes = -134,
+
+	RaidsDragonflight = 15468,
+	RaidsDragonflightVaultOfTheIncarnates = -135,
+
+
 
 	Professions = 169,
 	ProfessionsCooking = 170,
@@ -143,6 +151,7 @@ enum.AchievementCategories = {
 	ProfessionsCookingCook = 24,
 	ProfessionsCookingDailyQuests = 25,
 	ProfessionsFishing = 171,
+	ProfessionsFishingDragonflight = -139,
 	ProfessionsFishingLevel = 26,
 	ProfessionsFishingFishUp = 27,
 	ProfessionsFishingCatch = 28,
@@ -156,7 +165,7 @@ enum.AchievementCategories = {
 	ProfessionsArchaeologyDraenor = 35,
 	ProfessionsArchaeologyLegion = 36,
 	ProfessionsArchaeologyBfA = 37,
-	
+
 	Reputations = 201,
 	ReputationsExalted = -40,
 	ReputationsAlliedRaces = -41,
@@ -164,14 +173,15 @@ enum.AchievementCategories = {
 	ReputationsClassic = 14864,
 	ReputationsBurningCrusade = 14865,
 	ReputationsLichKing = 14866,
-	ReputationsCataclysm	= 15072,
-	ReputationsPandaria	= 15114,
+	ReputationsCataclysm = 15072,
+	ReputationsPandaria = 15114,
 	ReputationsDraenor = 15232,
-	ReputationsLegion	= 15258,
-	ReputationsBfA	= 15305,
+	ReputationsLegion = 15258,
+	ReputationsBfA = 15305,
 	ReputationsShadowlands = 15439,
-	
-	WorldEvents	= 155,
+	ReputationsDragonflight = 15466,
+
+	WorldEvents = 155,
 	WorldEventsLunarFestival = 160,
 	WorldEventsLoveIsInTheAir = 187,
 	WorldEventsNoblegarden = 159,
@@ -189,7 +199,7 @@ enum.AchievementCategories = {
 	WorldEventsDarkmoonRealRace = -47,
 	WorldEventsDarkmoonRealBigRace = -48,
 	WorldEventsBrawlersGuild = 15282,
-	
+
 	PetBattles = 15117,
 	PetBattlesCollect = 15118,
 	PetBattlesCollectUnique = -50,
@@ -202,6 +212,7 @@ enum.AchievementCategories = {
 	PetBattlesBattleArgus = -58,
 	PetBattlesBattleBfA = -59,
 	PetBattlesBattleShadowlands = -60,
+	PetBattlesBattleDragonflight = -136,
 	PetBattlesLevel = 15120,
 
 	Collections = 15246,
@@ -210,7 +221,7 @@ enum.AchievementCategories = {
 	CollectionsAppearances = 15259,
 	CollectionsAppearancesRaids = -61,
 	CollectionsAppearancesPvP = -62,
-	
+
 	ExpansionFeatures = 15301,
 	ExpansionFeaturesArgentTournament = 14941,
 	ExpansionFeaturesTolBarad = 15075,
@@ -235,7 +246,9 @@ enum.AchievementCategories = {
 	ExpansionFeaturesCovenantSanctumsNightFae = -71,
 	ExpansionFeaturesCovenantSanctumsNecrolords = -72,
 	ExpansionFeaturesCovenantSanctumsAdventures = -73,
-	
+	ExpansionFeaturesDragonriderRacing = 15462,
+	ExpansionFeaturesPrimalStorms = 15474,
+
 	FeatsOfStrength = 81,
 	FeatsOfStrengthMounts = 15269,
 	FeatsOfStrengthMountsArena = -80,
@@ -244,6 +257,7 @@ enum.AchievementCategories = {
 	FeatsOfStrengthDungeonsChallenge = -82,
 	FeatsOfStrengthDungeonsBfA = -83,
 	FeatsOfStrengthDungeonsShadowlands = -84,
+	FeatsOfStrengthDungeonsDragonflight = -137,
 	FeatsOfStrengthRaids = 15271,
 	FeatsOfStrengthRaidsAhead = -85,
 	FeatsOfStrengthRaidsCuttingEdge = -86,
@@ -252,6 +266,7 @@ enum.AchievementCategories = {
 	FeatsOfStrengthPvPLegion = -88,
 	FeatsOfStrengthPvPBfA = -89,
 	FeatsOfStrengthPvPShadowlands = -90,
+	FeatsOfStrengthPvPDragonflight = -138,
 	FeatsOfStrengthPvPRatedBG = -91,
 	FeatsOfStrengthPvPUnchained = -92,
 	FeatsOfStrengthReputation = 15273,
@@ -262,5 +277,5 @@ enum.AchievementCategories = {
 	FeatsOfStrengthPromotionsBlizzCon = -95,
 	FeatsOfStrengthPromotionsCollector = -96,
 	FeatsOfStrengthRealmFirst = -97,
-	
+
 }

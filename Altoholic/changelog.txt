@@ -2,6 +2,15 @@ Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
 
+3.4.002 (20/12/2022)
+
+- Added DataStore_Currencies.
+- Grids Tab : Added support for currencies.
+- Toolip : Added support for currencies.
+- Added support for Jewelcrafting & Inscription.
+
+Thanks to Yamilife & Takka for their help !
+
 3.4.001 (25/10/2022)
 
 First of all, huge thanks to Takka, Klyup, Spudicus, Himeki, Mewse and maybe a few others I have missed for helping since the LK release!

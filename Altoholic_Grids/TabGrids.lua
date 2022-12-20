@@ -103,6 +103,12 @@ addon:Controller("AltoholicUI.TabGrids", {
 		else
 			frame.Factions:DisableIcon()
 		end
+		
+		if DataStore_Currencies then
+			frame.Tokens:EnableIcon()
+		else
+			frame.Tokens:DisableIcon()
+		end
 
 		if DataStore_Quests then
 			frame.Attunements:EnableIcon()

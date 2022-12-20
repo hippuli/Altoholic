@@ -144,10 +144,10 @@ function addon:SetupOptions()
 	DataStoreGeneralOptions_Title:SetText(TEAL..format("DataStore %s", DataStore.Version))
 	
 	-- manually adjust the width of a few panes, as resolution/scale may have an impact on the layout
-	local width = InterfaceOptionsFramePanelContainer:GetWidth() - 45
-	DataStoreHelp:SetWidth(width)
-	DataStoreHelp_ScrollFrame:SetWidth(width)
-	DataStoreHelp_Text:SetWidth(width-35)
+	-- local width = InterfaceOptionsFramePanelContainer:GetWidth() - 45
+	-- DataStoreHelp:SetWidth(width)
+	-- DataStoreHelp_ScrollFrame:SetWidth(width)
+	-- DataStoreHelp_Text:SetWidth(width-35)
 end
 
 function addon:ToggleOption(frame, module, option)

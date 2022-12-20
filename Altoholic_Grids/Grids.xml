@@ -3,6 +3,7 @@
 	<Script file="Grid_Equipment.lua"></Script>
 	<Script file="Grid_Keys.lua"></Script>
 	<Script file="Grid_Reputations.lua"></Script>
+	<Script file="Grid_Currencies.lua"></Script>
 	<Script file="Grid_Tradeskills.lua"></Script>
 	<Script file="Grid_Dailies.lua"></Script>
 	<Script file="Grid_Dungeons.lua"></Script>

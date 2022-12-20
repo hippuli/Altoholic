@@ -23,27 +23,27 @@ DataStore.Enum = {
 	BankTypesLabels = {
 		Cooking = GetSpellInfo(2550),
 		Fishing = GetSpellInfo(131474),
-		Herb = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 9),
-		Cloth = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 5),
-		Leather = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 6),
-		Metal = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 7),
-		Elemental = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 10),
-		Enchanting = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 12),
+		Herb = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 9),
+		Cloth = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 5),
+		Leather = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 6),
+		Metal = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 7),
+		Elemental = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 10),
+		Enchanting = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 12),
 		Engineering = GetSpellInfo(4036),
-		Jewelcrafting = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 4),
-		Inscription = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 16),
+		Jewelcrafting = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 4),
+		Inscription = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 16),
 		BattlePets = AUCTION_CATEGORY_BATTLE_PETS,
 		[1] = GetSpellInfo(2550),
 		[2] = GetSpellInfo(131474),
-		[3] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 9),
-		[4] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 5),
-		[5] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 6),
-		[6] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 7),
-		[7] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 10),
-		[8] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 12),
+		[3] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 9),
+		[4] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 5),
+		[5] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 6),
+		[6] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 7),
+		[7] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 10),
+		[8] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 12),
 		[9] = GetSpellInfo(4036),
-		[10] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 4),
-		[11] = GetItemSubClassInfo(LE_ITEM_CLASS_TRADEGOODS, 16),
+		[10] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 4),
+		[11] = GetItemSubClassInfo(Enum.ItemClass.Tradegoods, 16),
 		[12] = AUCTION_CATEGORY_BATTLE_PETS,
 	},
 }
@@ -76,5 +76,6 @@ else
 		EXPANSION_NAME6,	-- "Legion"
 		EXPANSION_NAME7,  -- "Battle for Azeroth"
 		EXPANSION_NAME8,  -- "Shadowlands"
+		EXPANSION_NAME9, 	-- "Dragonflight"
 	}
 end

@@ -4,8 +4,8 @@ _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "A
 
 local addon = _G[addonName]
 
-addon.Version = "v3.4.001"
-addon.VersionNum = 304001
+addon.Version = "v3.4.002"
+addon.VersionNum = 304002
 
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 local commPrefix = addonName
@@ -317,6 +317,8 @@ local SPELL_ID_ALCHEMY = 2259
 local SPELL_ID_BLACKSMITHING = 3100
 local SPELL_ID_ENCHANTING = 7411
 local SPELL_ID_ENGINEERING = 4036
+local SPELL_ID_INSCRIPTION = 45357
+local SPELL_ID_JEWELCRAFTING = 25229
 local SPELL_ID_LEATHERWORKING = 2108
 
 local SPELL_ID_TAILORING = 3908
@@ -332,18 +334,20 @@ local SPELL_ID_FISHING = 7732			-- do not use 7733, it's "Artisan Fishing", not 
 addon.TradeSkills = {
 	Recipes = {},
 	-- spell IDs in alphabetical order (english), primary then secondary
-	spellIDs = { 2259, 3100, 7411, 4036, 2108, 3908, 8613, 2575, 2366, 2550, 3273, 7732 },
-	firstSecondarySkillIndex = 10, -- index of the first secondary profession in the table
-	
-	AccountSummaryFiltersSpellIDs = { 2259, 3100, 7411, 4036, 2108, 3908, 8613, 2575, 2366, 2550, 3273, 7732 },
-	AccountSummaryFirstSecondarySkillIndex = 10, -- index of the first secondary profession in the table
+   spellIDs = { 2259, 3100, 7411, 4036, 45357, 25229, 2108, 3908, 8613, 2575, 2366, 2550, 3273, 7732 },
+	firstSecondarySkillIndex = 12, -- index of the first secondary profession in the table
 		
+   AccountSummaryFiltersSpellIDs = { 2259, 3100, 7411, 4036, 45357, 25229, 2108, 3908, 8613, 2575, 2366, 2550, 3273, 7732 },
+	AccountSummaryFirstSecondarySkillIndex = 12, -- index of the first secondary profession in the table
+
 	Names = {
 		ALCHEMY = GetSpellInfo(2259),
 		BLACKSMITHING = GetSpellInfo(3100),
 		COOKING = GetSpellInfo(2550),
 		ENCHANTING = GetSpellInfo(7411),
 		ENGINEERING = GetSpellInfo(4036),
+		INSCRIPTION = GetSpellInfo(45357),
+		JEWELCRAFTING = GetSpellInfo(25229),
 		FIRSTAID = GetSpellInfo(3273),
 		FISHING = GetSpellInfo(7732),
 		HERBALISM = GetSpellInfo(2366),
