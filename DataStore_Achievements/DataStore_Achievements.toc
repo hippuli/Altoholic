@@ -9,5 +9,5 @@
 ## X-Category: Interface Enhancements
 ## X-Embeds: Ace3
 
-Enum.lua
+#Enum.lua
 DataStore_Achievements.lua
