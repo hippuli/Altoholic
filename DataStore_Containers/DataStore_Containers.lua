@@ -200,21 +200,21 @@ local GUILDBANK	= 3		-- 98 main slots
 local ContainerTypes = {
 	[BAGS] = {
 		GetSize = function(self, bagID)
-				return GetContainerNumSlots(bagID)
+				return C_Container.GetContainerNumSlots(bagID)
 			end,
 		GetFreeSlots = function(self, bagID)
-				local freeSlots, bagType = GetContainerNumFreeSlots(bagID)
+				local freeSlots, bagType = C_Container.GetContainerNumFreeSlots(bagID)
 				return freeSlots, bagType
 			end,
 		GetLink = function(self, slotID, bagID)
-				return GetContainerItemLink(bagID, slotID)
+				return C_Container.GetContainerItemLink(bagID, slotID)
 			end,
 		GetCount = function(self, slotID, bagID)
-				local _, count = GetContainerItemInfo(bagID, slotID)
+				local _, count = C_Container.GetContainerItemInfo(bagID, slotID)
 				return count
 			end,
 		GetCooldown = function(self, slotID, bagID)
-				local startTime, duration, isEnabled = GetContainerItemCooldown(bagID, slotID)
+				local startTime, duration, isEnabled = C_Container.GetContainerItemCooldown(bagID, slotID)
 				return startTime, duration, isEnabled
 			end,
 	},
@@ -223,16 +223,16 @@ local ContainerTypes = {
 				return NUM_BANKGENERIC_SLOTS or 28		-- hardcoded in case the constant is not set
 			end,
 		GetFreeSlots = function(self)
-				local freeSlots, bagType = GetContainerNumFreeSlots(-1)		-- -1 = player bank
+				local freeSlots, bagType = C_Container.GetContainerNumFreeSlots(-1)		-- -1 = player bank
 				return freeSlots, bagType
 			end,
 		GetLink = function(self, slotID)
 				-- return GetInventoryItemLink("player", slotID)
-				return GetContainerItemLink(-1, slotID)
+				return C_Container.GetContainerItemLink(-1, slotID)
 			end,
 		GetCount = function(self, slotID)
 				-- return GetInventoryItemCount("player", slotID)
-				return select(2, GetContainerItemInfo(-1, slotID))
+				return select(2, C_Container.GetContainerItemInfo(-1, slotID))
 			end,
 		GetCooldown = function(self, slotID)
 				local startTime, duration, isEnabled = GetInventoryItemCooldown("player", slotID)
@@ -393,8 +393,8 @@ local function ScanBag(bagID)
 		bag.icon = "ICONS\\INV_Misc_Key_04.blp"
 		bag.link = nil
 	else						-- Bags 1 through 11
-		bag.icon = GetInventoryItemTexture("player", ContainerIDToInventoryID(bagID))
-		bag.link = GetInventoryItemLink("player", ContainerIDToInventoryID(bagID))
+		bag.icon = GetInventoryItemTexture("player", C_Container.ContainerIDToInventoryID(bagID))
+		bag.link = GetInventoryItemLink("player", C_Container.ContainerIDToInventoryID(bagID))
 		if bag.link then
 			local _, _, rarity = GetItemInfo(bag.link)
 			if rarity then	-- in case rarity was known from a previous scan, and GetItemInfo returns nil for some reason .. don't overwrite
