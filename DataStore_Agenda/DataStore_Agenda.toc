@@ -1,4 +1,4 @@
-## Interface: 30400
+## Interface: 30401
 ## Title: DataStore_Agenda
 ## Notes: Stores information about a character's friends, calendar, notes, etc..
 ## Author: Thaoky (EU-Marécages de Zangar)

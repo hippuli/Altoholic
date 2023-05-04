@@ -52,15 +52,15 @@ local function SetStatus(character, professionName, mainCategory, numRecipes)
 end
 
 local function RecipePassesColorFilter(color)
-	-- the recipe is accounter for if we want any color, or if it matches a specific one
+	-- the recipe is accounted for if we want any color, or if it matches a specific one
 	return ((currentColor == SKILL_ANY) or (currentColor == color))
 end
 
-local function RecipePassesSlotFilter(itemID)
+local function RecipePassesSlotFilter(recipeID)
 	if currentSlots == ALL_INVENTORY_SLOTS then return true end
 	
-	-- if recipeID then	-- on a data line, recipeID is numeric
-		-- local itemID = DataStore:GetCraftResultItem(recipeID)
+	if recipeID then	-- on a data line, recipeID is numeric
+		local itemID = DataStore:GetCraftResultItem(recipeID)
 		if itemID then
 			local _, _, _, _, _, itemType, _, _, itemEquipLoc = GetItemInfo(itemID)
 			
@@ -78,20 +78,18 @@ local function RecipePassesSlotFilter(itemID)
 		else		-- enchants, like socket bracer, might not have an item id, so hide the line
 			return false
 		end
-	-- else
-		-- if currentSlots ~= NONEQUIPSLOT then
-			-- return false
-		-- end
-	-- end
+	else
+		if currentSlots ~= NONEQUIPSLOT then
+			return false
+		end
+	end
 end
 
-local isSearchingEnchanting
-
-local function RecipePassesSearchFilter(itemID)
+local function RecipePassesSearchFilter(recipeID)
 	-- no search filter ? ok
 	if currentSearch == "" then return true end
 	
-	local name = isSearchingEnchanting and GetSpellInfo(itemID) or GetItemInfo(itemID)
+	local name = GetSpellInfo(recipeID)
 
 	if name and string.find(strlower(name), currentSearch, 1, true) then
 		return true
@@ -102,16 +100,12 @@ local function GetRecipeList(character, professionName, mainCategory)
 	local list = {}
 	
 	local profession = DataStore:GetProfession(character, professionName)
-	
-	isSearchingEnchanting = IsEnchanting(professionName)
 
-	DataStore:IterateRecipes(profession, mainCategory, function(color, itemID, index) 
+	DataStore:IterateRecipes(profession, mainCategory, function(color, recipeID, index) 
 		
-		-- if RecipePassesColorFilter(color) and RecipePassesSlotFilter(recipeID) and RecipePassesSearchFilter(recipeID) then
-		if RecipePassesColorFilter(color) and RecipePassesSlotFilter(itemID) and RecipePassesSearchFilter(itemID) then
+		if RecipePassesColorFilter(color) and RecipePassesSlotFilter(recipeID) and RecipePassesSearchFilter(recipeID) then
 			table.insert(list, index)
 		end
-		
 	end)
 	
 	return list
@@ -126,7 +120,7 @@ addon:Controller("AltoholicUI.Recipes", {
 	GetCurrentSlots = function(frame) return currentSlots end,
 	SetCurrentColor = function(frame, color) currentColor = color end,
 	GetCurrentColor = function(frame) return currentColor end,
-	GetRecipeColorName = function(frame, index) return RecipeColors[index]..RecipeColorNames[index] end,
+	GetRecipeColorName = function(frame, index) return format("%s%s", RecipeColors[index], RecipeColorNames[index]) end,
 
 	Update = function(frame)
 		local character = addon.Tabs.Characters:GetAltKey()
@@ -144,9 +138,9 @@ addon:Controller("AltoholicUI.Recipes", {
 			local line = rowIndex + offset
 			
 			if line <= #recipeList then	-- if the line is visible
-				local color, itemID, icon = DataStore:GetRecipeInfo(character, currentProfession, recipeList[line])
+				local color, recipeID, icon = DataStore:GetRecipeInfo(character, currentProfession, recipeList[line])
 				
-				rowFrame:Update(itemID, RecipeColors[color], isEnchanting, icon)
+				rowFrame:Update(currentProfession, recipeID, RecipeColors[color])
 				rowFrame:Show()
 			else
 				rowFrame:Hide()
@@ -159,12 +153,14 @@ addon:Controller("AltoholicUI.Recipes", {
 	Link_OnClick = function(frame, button)
 		if button ~= "LeftButton" then return end
 		
+		local character = addon.Tabs.Characters:GetAltKey()
+		if not character then return end
+		
 		if addon.Tabs.Characters:GetRealm() ~= GetRealmName() then
 			addon:Print(L["Cannot link another realm's tradeskill"])
 			return
 		end
 
-		local character = addon.Tabs.Characters:GetAltKey()
 		local profession = DataStore:GetProfession(character, currentProfession)
 		local link = profession.FullLink
 

@@ -30,6 +30,7 @@ local VIEW_SPELLS = 8
 local VIEW_PROFESSION = 9
 
 local TEXTURE_FONT = "|T%s:%s:%s|t"
+local tocVersion = select(4, GetBuildInfo())
 
 addon.Summary = {}
 
@@ -208,11 +209,11 @@ local function Tradeskill_OnClick(frame, skillName)
 	local charName, realm, account = strsplit(".", character)
 	local chat = ChatEdit_GetLastActiveWindow()
 	
-	if chat:IsShown() and IsShiftKeyDown() and realm == GetRealmName() then
+	if chat:IsShown() and IsShiftKeyDown() and realm == DataStore.ThisRealm then
 		-- if shift-click, then display the profession link and exit
 		local link = profession.FullLink	
 		if link and link:match("trade:") then
-			chat:Insert(link);
+			chat:Insert(link)
 		end
 		return
 	end
@@ -1558,8 +1559,18 @@ function addon:AiLTooltip()
 	local tt = AltoTooltip
 	
 	tt:AddLine(" ")
-	tt:AddDoubleLine(format("%sTier 0", colors.teal), FormatAiL("58-63"))
-	tt:AddDoubleLine(format("%sTier 1", colors.teal), FormatAiL("66"))
-	tt:AddDoubleLine(format("%sTier 2", colors.teal), FormatAiL("76"))
-	tt:AddDoubleLine(format("%sTier 3", colors.teal), FormatAiL("86-92"))
+	if tocVersion < 30000 then
+		tt:AddDoubleLine(format("%sTier 0", colors.teal), FormatAiL("58-63"))
+		tt:AddDoubleLine(format("%sTier 1", colors.teal), FormatAiL("66"))
+		tt:AddDoubleLine(format("%sTier 2", colors.teal), FormatAiL("76"))
+		tt:AddDoubleLine(format("%sTier 3", colors.teal), FormatAiL("86-92"))
+	
+	elseif tocVersion < 100000 then
+		-- Wrath achievement levels
+		tt:AddDoubleLine(format("%sSuperior", colors.teal), FormatAiL("187-200"))
+		tt:AddDoubleLine(format("%sEpic", colors.teal), FormatAiL("213"))
+		-- What is the right level range for tier with Wrath?
+		--tt:AddDoubleLine(format("%sTier 7", colors.teal), FormatAiL("200-213")) 
+		--tt:AddDoubleLine(format("%sTier 8", colors.teal), FormatAiL("232-252"))
+	end
 end

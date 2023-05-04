@@ -210,8 +210,7 @@ local ContainerTypes = {
 				return C_Container.GetContainerItemLink(bagID, slotID)
 			end,
 		GetCount = function(self, slotID, bagID)
-				local _, count = C_Container.GetContainerItemInfo(bagID, slotID)
-				return count
+				return C_Container.GetContainerItemInfo(bagID, slotID).stackCount
 			end,
 		GetCooldown = function(self, slotID, bagID)
 				local startTime, duration, isEnabled = C_Container.GetContainerItemCooldown(bagID, slotID)
@@ -232,7 +231,7 @@ local ContainerTypes = {
 			end,
 		GetCount = function(self, slotID)
 				-- return GetInventoryItemCount("player", slotID)
-				return select(2, C_Container.GetContainerItemInfo(-1, slotID))
+				return C_Container.GetContainerItemInfo(-1, slotID).stackCount
 			end,
 		GetCooldown = function(self, slotID)
 				local startTime, duration, isEnabled = GetInventoryItemCooldown("player", slotID)
@@ -446,7 +445,6 @@ end
 local function OnGuildBankFrameClosed()
 	addon:UnregisterEvent("GUILDBANKFRAME_CLOSED")
 	addon:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
-	addon:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
 	
 	local guildName = GetGuildInfo("player")
 	if guildName then
@@ -459,14 +457,31 @@ local function OnGuildBankBagSlotsChanged()
 	ScanGuildBankInfo()
 end
 
+local function OnManagerFrameHide(eventName, ...)
+	local paneType = ...
+	
+	if paneType ==  Enum.PlayerInteractionType.GuildBanker then
+		OnGuildBankFrameClosed()
+	end
+end
+
 local function OnGuildBankFrameOpened()
 	addon:RegisterEvent("GUILDBANKFRAME_CLOSED", OnGuildBankFrameClosed)
+	addon:RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_HIDE", OnManagerFrameHide);
 	addon:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", OnGuildBankBagSlotsChanged)
 	
 	local thisGuild = GetThisGuild()
 	if thisGuild then
 		thisGuild.money = GetGuildBankMoney()
 		thisGuild.faction = UnitFactionGroup("player")
+	end
+end
+
+local function OnManagerFrameShow(eventName, ...)
+	local paneType = ...
+	
+	if paneType ==  Enum.PlayerInteractionType.GuildBanker then
+		OnGuildBankFrameOpened()
 	end
 end
 
@@ -869,7 +884,7 @@ local GuildCommCallbacks = {
 }
 
 function addon:OnInitialize()
-	addon.db = LibStub("AceDB-3.0"):New(addonName .. "DB", AddonDB_Defaults)
+	addon.db = LibStub("AceDB-3.0"):New(format("%sDB", addonName), AddonDB_Defaults)
 	UpdateDB()
 
 	DataStore:RegisterModule(addonName, addon, PublicMethods)
@@ -916,6 +931,7 @@ function addon:OnEnable()
 	addon:RegisterEvent("BAG_UPDATE", OnBagUpdate)
 	addon:RegisterEvent("BANKFRAME_OPENED", OnBankFrameOpened)
 	addon:RegisterEvent("GUILDBANKFRAME_OPENED", OnGuildBankFrameOpened)
+	addon:RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", OnManagerFrameShow)
 
 	-- disable bag updates during multi sell at the AH
 	addon:RegisterEvent("AUCTION_HOUSE_SHOW", OnAuctionHouseShow)
@@ -926,4 +942,5 @@ function addon:OnDisable()
 	addon:UnregisterEvent("BANKFRAME_OPENED")
 	addon:UnregisterEvent("GUILDBANKFRAME_OPENED")
 	addon:UnregisterEvent("AUCTION_HOUSE_SHOW")
+	addon:UnregisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW")
 end

@@ -15,6 +15,7 @@ Other services offered by DataStore:
 
 local addonName, addon = ...
 DataStore = LibStub("AceAddon-3.0"):NewAddon(addon, addonName, "AceConsole-3.0", "AceEvent-3.0", "AceComm-3.0", "AceSerializer-3.0")
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 addon.Version = "v" .. GetAddOnMetadata(addonName, "Version")
 
 addon.ThisAccount = "Default"

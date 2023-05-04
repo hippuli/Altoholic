@@ -1,8 +1,10 @@
-## Interface: 30400
+## Interface: 30401
 ## Title: DataStore by |cFF69CCF0Thaoky|r
+## IconTexture: Interface\Icons\garrison_building_storehouse
+
 ## Notes: Main DataStore Module
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2022.12.18
+## Version: 2023.05.03
 ## OptionalDeps: Ace3, LibAboutPanel 
 ## SavedVariables: DataStoreDB
 ## X-Embeds: Ace3

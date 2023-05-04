@@ -15,7 +15,7 @@
 			<Layer level="BACKGROUND">
 				<Texture parentKey="Weekday1Background" inherits="AltoWeekdayBackgroundTemplate">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="280" y="25" />
+						<Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="280" y="25" />
 					</Anchors>
 				</Texture>
 				<Texture parentKey="Weekday2Background" inherits="AltoWeekdayBackgroundTemplate">
@@ -102,10 +102,8 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						local parent = self:GetParent()
-						
-						parent:SetMonth(-1)
-						parent:Update()
+						C_Calendar.SetMonth(-1)
+						self:GetParent():Update()
 					</OnClick>
 				</Scripts>
 				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
@@ -120,10 +118,8 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						local parent = self:GetParent()
-						
-						parent:SetMonth(1)
-						parent:Update()
+						C_Calendar.SetMonth(1)
+						self:GetParent():Update()
 					</OnClick>
 				</Scripts>
 				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>

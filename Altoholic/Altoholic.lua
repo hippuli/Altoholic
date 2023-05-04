@@ -7,6 +7,7 @@ local addon = _G[addonName]
 local colors = addon.Colors
 
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
+local LCI = LibStub("LibCraftInfo-1.0")
 
 local THIS_ACCOUNT = "Default"
 
@@ -409,7 +410,7 @@ end
 function addon:Item_OnEnter(frame)
 	if not frame.id then return end
 	
-	GameTooltip:SetOwner(frame, "ANCHOR_LEFT");
+	GameTooltip:SetOwner(frame, "ANCHOR_LEFT")
 	frame.link = frame.link or select(2, GetItemInfo(frame.id) )
 	
 	if frame.link then
@@ -490,12 +491,6 @@ function addon:GetSpellIcon(spellID)
 	return select(3, GetSpellInfo(spellID))
 end
 
-function addon:GetRecipeLink(spellID, profession, color)
-	local name = GetSpellInfo(spellID) or ""
-	color = color or "|cffffd000"
-	return format("%s|Henchant:%s|h[%s: %s]|h|r", color, spellID, profession, name)
-end
-
 function addon:GetIDFromLink(link)
 	if link then
 		local linktype, id = string.match(link, "|H([^:]+):(%d+)")
@@ -503,6 +498,20 @@ function addon:GetIDFromLink(link)
 			return tonumber(id)
 		end
 	end
+end
+
+function addon:GetSpellIDFromRecipeLink(link)
+	-- returns nil if recipe id is not in the DB, returns the spellID otherwise
+	local recipeID = addon:GetIDFromLink(link)
+	return LCI:GetRecipeLearnedSpell(recipeID)
+end
+
+function addon:GetRecipeLink(spellID, profession, color)
+	color = color or "|cffffd000"
+	local name = GetSpellInfo(spellID) or ""
+	-- addon:Print(format("%s|Henchant:%s|h[%s: %s]|h|r", color, spellID, profession, name)) --debug
+
+	return format("%s|Henchant:%s|h[%s: %s]|h|r", color, spellID, profession, name)
 end
 
 -- copied to formatter service
@@ -634,11 +643,13 @@ function addon:GetRecipeLevel(link, tooltip)
 	local tooltipName = tooltip:GetName()
 	
 	for i = (tooltip:NumLines() - 1), 2, -1 do			-- parse all tooltip lines, from last to second
-		local tooltipText = _G[tooltipName .. "TextLeft" .. i]:GetText()
+		local tooltipText = _G[format("%sTextLeft%d", tooltipName, i)]:GetText()
+		
 		if tooltipText then
-			local _, _, rLevel = string.find(tooltipText, "%((%d+)%)") -- find number enclosed in brackets
-			if rLevel then
-				return tonumber(rLevel)
+			local _, _, recipeLevel = string.find(tooltipText, "%((%d+)%)") -- find number enclosed in brackets
+			
+			if recipeLevel then
+				return tonumber(recipeLevel)
 			end
 		end
 	end

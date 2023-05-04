@@ -146,23 +146,23 @@ local function WriteCounterLines(tooltip)
 	if #counterLines == 0 then return end
 
 	if addon:GetOption("UI.Tooltip.ShowItemCount") then			-- add count per character/guild
-		tooltip:AddLine(" ",1,1,1);
+		tooltip:AddLine(" ",1,1,1)
 		for _, line in ipairs (counterLines) do
-			tooltip:AddDoubleLine(line.owner,  colors.teal .. line.info);
+			tooltip:AddDoubleLine(line.owner,  format("%s%s", colors.teal, line.info))
 		end
 	end
 end
 
 local function WriteTotal(tooltip)
 	if addon:GetOption("UI.Tooltip.ShowTotalItemCount") and cachedTotal then
-		tooltip:AddLine(cachedTotal,1,1,1);
+		tooltip:AddLine(cachedTotal, 1,1,1)
 	end
 end
 
 local function GetRealmsList()
 	-- returns the list of realms to check, either only this realm, or merged realms too.
 	local realms = {}
-	table.insert(realms, THIS_REALM)
+	table.insert(realms, THIS_REALM)		-- always "this realm" first
 	
 	if addon:GetOption("UI.Tooltip.ShowMergedRealmsCount") then
 		for _, connectedRealm in pairs(DataStore:GetRealmsConnectedWith(THIS_REALM)) do
@@ -203,7 +203,7 @@ local function GetCharacterItemCount(character, searchedID)
 		local t = {}
 		for k, v in pairs(itemCounts) do
 			if v > 0 then	-- if there are more than 0 items in this container
-				table.insert(t, colors.white .. itemCountsLabels[k] .. ": "  .. colors.teal .. v)
+				table.insert(t, format("%s%s: %s%s", colors.white, itemCountsLabels[k], colors.teal, v))
 			end
 		end
 
@@ -211,7 +211,7 @@ local function GetCharacterItemCount(character, searchedID)
 			AddCounterLine(name, format("%s%s", colors.orange, charCount))
 		else
 			-- charInfo should look like 	(Bags: 4, Bank: 8, Equipped: 1, Mail: 7), table concat takes care of this
-			AddCounterLine(name, format("%s%s%s (%s%s)", colors.orange, charCount, colors.white, table.concat(t, colors.white..", "), colors.white))
+			AddCounterLine(name, format("%s%s%s (%s%s)", colors.orange, charCount, colors.white, table.concat(t, format("%s, ", colors.white)), colors.white))
 		end
 	end
 	
@@ -260,6 +260,7 @@ local function GetItemCount(searchedID)
 				if (showCrossFaction or (not showCrossFaction and (DataStore:GetGuildBankFaction(guildKey) == UnitFactionGroup("player")))) 
 					and (not altoGuild or (altoGuild and not altoGuild.hideInTooltip)) then
 					local guildCount = 0
+					local guildLabel = format("%s%s|r", colors.green, guildName)
 					
 					if addon:GetOption("UI.Tooltip.ShowGuildBankCountPerTab") then
 						local tabCounters = {}
@@ -268,18 +269,18 @@ local function GetItemCount(searchedID)
 						for tabID = 1, 8 do 
 							tabCount = DataStore:GetGuildBankTabItemCount(guildKey, tabID, searchedID)
 							if tabCount and tabCount > 0 then
-								table.insert(tabCounters,  format("%s: %s", colors.white .. DataStore:GetGuildBankTabName(guildKey, tabID), colors.teal..tabCount))
+								table.insert(tabCounters,  format("%s%s: %s%d", colors.white, DataStore:GetGuildBankTabName(guildKey, tabID), colors.teal, tabCount))
 							end
 						end
 						
 						if #tabCounters > 0 then
 							guildCount = DataStore:GetGuildBankItemCount(guildKey, searchedID) or 0
-							AddCounterLine(colors.green..guildName, format("%s %s(%s%s)", colors.orange .. guildCount, colors.white, table.concat(tabCounters, ","), colors.white))
+							AddCounterLine(guildLabel, format("%s%d %s(%s%s)", colors.orange, guildCount, colors.white, table.concat(tabCounters, ","), colors.white))
 						end
 					else
 						guildCount = DataStore:GetGuildBankItemCount(guildKey, searchedID) or 0
 						if guildCount > 0 then
-							AddCounterLine(colors.green..guildName, format("%s(%s: %s%s)", colors.white, GUILD_BANK, colors.teal..guildCount, colors.white))
+							AddCounterLine(guildLabel, format("%s(%s: %s%d%s)", colors.white, GUILD_BANK, colors.teal, guildCount, colors.white))
 						end
 					end
 						
@@ -296,13 +297,16 @@ end
 
 function addon:GetRecipeOwners(professionName, link, recipeLevel)
 	local craftName
+	local spellID = addon:GetSpellIDFromRecipeLink(link)
 
 	-- April 2021 : removed processing with the spell ID.
 	-- In classic, the spell ID of a craft is actually not known
 	-- So force the add-on to compare the recipe header with the item name
 
-	craftName = GetCraftNameFromRecipeLink(link)
-	if not craftName then return end		-- still nothing usable ? then exit
+	if not spellID then		-- spell id unknown ? let's parse the tooltip
+		craftName = GetCraftNameFromRecipeLink(link)
+		if not craftName then return end		-- still nothing usable ? then exit
+	end
 	
 	local know = {}				-- list of alts who know this recipe
 	local couldLearn = {}		-- list of alts who could learn it
@@ -313,32 +317,26 @@ function addon:GetRecipeOwners(professionName, link, recipeLevel)
 		return know, couldLearn, willLearn
 	end
 	
-	local profession, isKnownByChar, isEnchanting
+	local profession, isKnownByChar
 	for characterName, character in pairs(DataStore:GetCharacters()) do
 		profession = DataStore:GetProfession(character, professionName)
 
 		isKnownByChar = nil
-		isEnchanting = (professionName == GetSpellInfo(7411))
 		
 		if profession then
+			if spellID then			-- if spell id is known, just find its equivalent in the professions
+				isKnownByChar = DataStore:IsCraftKnown(profession, spellID)
+			else
+				DataStore:IterateRecipes(profession, 0, function(color, itemID)
+					--local _, recipeID, _ = DataStore:GetRecipeInfo(character, profession, itemID) -- retail has the COMPLETE recipe list for a tradeskill added tothe database.. dont enable till that is part of the wrath API -- TechnoHunter
+					local skillName = GetSpellInfo(itemID) or ""
 
-			-- Let's try to match on the craft name
-			DataStore:IterateRecipes(profession, 0, function(color, itemID)
-				local itemName = ""
-
-				if itemID then
-					if isEnchanting then
-						itemName = GetSpellInfo(itemID) or ""
-					else
-						itemName = GetItemInfo(itemID) or ""
+					if string.lower(skillName) == string.lower(craftName) then
+						isKnownByChar = true
+						return true	-- stop iteration
 					end
-				end
-				
-				if string.lower(itemName) == string.lower(craftName) then
-					isKnownByChar = true
-					return true	-- stop iteration
-				end
-			end)
+				end)
+			end
 
 			local coloredName = DataStore:GetColoredCharacterName(character)
 			
@@ -366,25 +364,64 @@ local function GetRecipeOwnersText(professionName, link, recipeLevel)
 	
 	local lines = {}
 	if #know > 0 then
-		table.insert(lines, colors.teal .. L["Already known by "] ..": ".. colors.white.. table.concat(know, ", ") .."\n")
+		table.insert(lines, format("%s%s|r : %s%s\n", colors.teal, L["Already known by "], colors.white, table.concat(know, ", ")))
 	end
 	
 	if #couldLearn > 0 then
-		table.insert(lines, colors.yellow .. L["Could be learned by "] ..": ".. colors.white.. table.concat(couldLearn, ", ") .."\n")
+		table.insert(lines, format("%s%s|r : %s%s\n", colors.yellow, L["Could be learned by "], colors.white, table.concat(couldLearn, ", ")))
 	end
 	
 	if #willLearn > 0 then
-		table.insert(lines, colors.red .. L["Will be learnable by "] ..": ".. colors.white.. table.concat(willLearn, ", "))
+		table.insert(lines, format("%s%s|r : %s%s", colors.red, L["Will be learnable by "], colors.white, table.concat(willLearn, ", ")))
 	end
 	
 	return table.concat(lines, "\n")
+end
+
+local function AddGlyphOwners(itemID, tooltip)
+	local know = {}				-- list of alts who know this glyoh
+	local couldLearn = {}		-- list of alts who could learn it
+
+	local knows, could
+	for characterName, character in pairs(DataStore:GetCharacters()) do
+		knows, could = DataStore:IsGlyphKnown(character, itemID)
+		if knows then
+			table.insert(know, characterName)
+		elseif could then
+			table.insert(couldLearn, characterName)
+		end
+	end
+	
+	if #know > 0 then
+		tooltip:AddLine(" ",1,1,1)
+		tooltip:AddLine(format("%s%s|r : %s%s", colors.teal, L["Already known by "], colors.white, table.concat(know, ", ")), 1, 1, 1, 1)
+	end
+	
+	if #couldLearn > 0 then
+		tooltip:AddLine(" ",1,1,1)
+		tooltip:AddLine(format("%s%s|r : %s%s", colors.yellow, L["Could be learned by "], colors.white, table.concat(couldLearn, ", ")), 1, 1, 1, 1)
+	end
 end
 
 local function ShowGatheringNodeCounters()
 	-- exit if player does not want counters for known gathering nodes
 	if addon:GetOption("UI.Tooltip.ShowGatheringNodesCount") == false then return end
 
-	local itemID = IsGatheringNode( _G["GameTooltipTextLeft1"]:GetText() )
+	-- Get the first tooltip line
+	local line = _G["GameTooltipTextLeft1"]:GetText()
+	if not line then return end 	-- may occasionally be nil
+
+	-- The first line is expected to contain the name of the node, but if the player is in altitude, the name
+	-- of the node will be preceded by an arrow pointing down. So attempt to detect the |t closing the texture
+	-- and make a substring of what follows it.
+	local endPos = select(2, line:find("|t", 1))
+
+	if endPos then
+		line = line:sub(endPos + 1)
+	end
+
+	--local itemID = IsGatheringNode( _G["GameTooltipTextLeft1"]:GetText() )
+	local itemID = IsGatheringNode(line)											 
 	if not itemID or (itemID == cachedItemID) then return end					-- is the item in the tooltip a known type of gathering node ?
 	
 	if Informant then
@@ -394,7 +431,7 @@ local function ShowGatheringNodeCounters()
 	-- check player bags to see how many times he owns this item, and where
 	if addon:GetOption("UI.Tooltip.ShowItemCount") or addon:GetOption("UI.Tooltip.ShowTotalItemCount") then
 		cachedCount = GetItemCount(itemID) -- if one of the 2 options is active, do the count
-		cachedTotal = (cachedCount > 0) and format("%s: %s", colors.gold..L["Total owned"], colors.teal..cachedCount) or nil
+		cachedTotal = (cachedCount > 0) and format("%s%s: %s%d", colors.gold, L["Total owned"], colors.teal, cachedCount) or nil
 	end
 	
 	WriteCounterLines(GameTooltip)
@@ -414,7 +451,7 @@ local function ProcessTooltip(tooltip, link)
 			itemID = tonumber(GetTradeSkillItemLink(TradeSkillFrame.selectedSkill):match("item:(%d+):")) or nil
 		else
 			for i = 1, 8 do
-				if (GetMouseFocus():GetName()) == "TradeSkillReagent"..i then
+				if (GetMouseFocus():GetName()) == format("TradeSkillReagent%d", i) then
 					itemID = tonumber(GetTradeSkillReagentItemLink(TradeSkillFrame.selectedSkill, i):match("item:(%d+):")) or nil
 					break
 				end
@@ -444,14 +481,14 @@ local function ProcessTooltip(tooltip, link)
 		-- .. then check player bags to see how many times he owns this item, and where
 		if addon:GetOption("UI.Tooltip.ShowItemCount") or addon:GetOption("UI.Tooltip.ShowTotalItemCount") then
 			cachedCount = GetItemCount(itemID) -- if one of the 2 options is active, do the count
-			cachedTotal = (cachedCount > 0) and format("%s: %s", colors.gold..L["Total owned"], colors.teal..cachedCount) or nil
+			cachedTotal = (cachedCount > 0) and format("%s%s: %s%s", colors.gold, L["Total owned"], colors.teal, cachedCount) or nil
 		end
 	end
 
 	-- add item cooldown text
 	local owner = tooltip:GetOwner()
 	if owner and owner.startTime then
-		tooltip:AddLine(format(ITEM_COOLDOWN_TIME, SecondsToTime(owner.duration - (GetTime() - owner.startTime))),1,1,1);
+		tooltip:AddLine(format(ITEM_COOLDOWN_TIME, SecondsToTime(owner.duration - (GetTime() - owner.startTime))),1,1,1)
 	end
 
 	local isHearth = hearthstoneItemIDs[itemID] 
@@ -545,7 +582,7 @@ local function Hook_SetCurrencyToken(self,index,...)
 	local currency = GetCurrencyListInfo(index)
 	if not currency then return end
 
-	GameTooltip:AddLine(" ",1,1,1);
+	GameTooltip:AddLine(" ",1,1,1)
 
 	local total = 0
 	local characters = DataStore:HashValueToSortedArray(DataStore:GetCharacters())
@@ -554,7 +591,7 @@ local function Hook_SetCurrencyToken(self,index,...)
 		local count = DataStore:GetCurrencyInfoByName(character, currency)
 		
 		if count and count > 0 then
-			GameTooltip:AddDoubleLine(DataStore:GetColoredCharacterName(character),  colors.teal .. count);
+			GameTooltip:AddDoubleLine(DataStore:GetColoredCharacterName(character), format("%s%s", colors.teal, count))
 			total = total + count
 		end
 	end

@@ -136,6 +136,17 @@ local function ClearGuildInventories()
 end
 
 
+--stubs for OnGetItemInfoReceived/CalculateAverageItemLevel (Will be redefined after ScanInventory)
+local function OnGetItemInfoReceived(event, itemID, success) return end
+local function CalculateAverageItemLevel() return end
+
+--[[-- debug function
+function ClearInventory()
+	local inventory = addon.ThisCharacter.Inventory
+	wipe(inventory)
+end
+--]]--
+
 -- *** Scanning functions ***
 local function ScanInventory()
 	local totalItemLevel = 0
@@ -146,26 +157,41 @@ local function ScanInventory()
 	
 	for i = 1, NUM_EQUIPMENT_SLOTS do
 		local link = GetInventoryItemLink("player", i)
-		if link then 
+		if link then
 			if IsEnchanted(link) then		-- if there's an enchant, save the full link
 				inventory[i] = link
 			else 									-- .. otherwise, only save the id
 				inventory[i] = tonumber(link:match("item:(%d+)"))
 			end		
-			
+		end
+	end
+
+	CalculateAverageItemLevel()
+	addon.ThisCharacter.lastUpdate = time()
+end
+
+-- Average item level can only be calculated after the item info is cached
+local function CalculateAverageItemLevel()
+	local totalItemLevel = 0
+	local itemCount = 0	
+	for i = 1, NUM_EQUIPMENT_SLOTS do
+		local link = GetInventoryItemLink("player", i)
+		if link then
+			local itemName = GetItemInfo(link)
+			if itemName == nil then
+				--print("Waiting for equipment slot "..i) --debug
+				addon:RegisterEvent("GET_ITEM_INFO_RECEIVED", OnGetItemInfoReceived)
+				return -- wait for GET_ITEM_INFO_RECEIVED (will be triggered by non-cached itemInfo request)
+			end
+
 			if (i ~= 4) and (i ~= 19) then		-- InventorySlotId 4 = shirt, 19 = tabard, skip them
 				itemCount = itemCount + 1
 				totalItemLevel = totalItemLevel + tonumber(((select(4, GetItemInfo(link))) or 0))
 			end
 		end
 	end
-
-	-- Found by qwarlocknew on 6/04/2021
-	-- On an alt with no gear, the "if link" in the loop could always be nil, and thus the itemCount could be zero
-	-- leading to a division by zero, so intercept this case
-	if itemCount == 0 then itemCount = 1 end
-	
-	addon.ThisCharacter.averageItemLvl = totalItemLevel / itemCount
+	--print(format("total: %d, count: %d, ail: %d",totalItemLevel, itemCount, totalItemLevel / itemCount)) --DAC
+	addon.ThisCharacter.averageItemLvl = totalItemLevel / math.max(itemCount, 1) -- math.max fixes divide by zero (bug credit: qwarlocknew)
 	addon.ThisCharacter.lastUpdate = time()
 end
 
@@ -176,6 +202,11 @@ end
 
 local function OnPlayerEquipmentChanged(event, slot)
 	ScanInventory()
+end
+
+local function OnGetItemInfoReceived(event, itemID, success)
+	CalculateAverageItemLevel()
+	addon:UnregisterEvent("GET_ITEM_INFO_RECEIVED")
 end
 
 -- ** Mixins **

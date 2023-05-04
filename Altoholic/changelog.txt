@@ -2,6 +2,23 @@ Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
 
+3.4.003 (03/05/2023)
+
+Most changes in this release are from TechnoHunter, many thanks for his support !
+
+- DataStore_Reputations : updated a few reputations
+- DataStore_Mails : fixed the events triggered when opening the mailbox.
+- DataStore_Crafts : fixed scanning of the Enchanting profession.
+- DataStore_Containers : fixed scanning of containers to use the new API.
+- DataStore_Containers : Fixed guild bank update (Thanks GovtGeek !)
+- DataStore_Auctions : fixed scanning functions.
+- DataStore_Auctions : added a warning when auctions have not been checked for a long time.
+- Fixed calendar issues.
+- Fixed the recipes panel.
+- Grids Tab : added the shift-click links on the reputation icons.
+- and a few more minor fixes !
+
+
 3.4.002 (20/12/2022)
 
 - Added DataStore_Currencies.

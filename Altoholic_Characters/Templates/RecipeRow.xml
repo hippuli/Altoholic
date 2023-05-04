@@ -3,6 +3,16 @@
 	
 	<Button name="AltoRecipeRowTemplate" virtual="true">
 		<Size x="615" y="43" />
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString parentKey="IsLearned" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x="80" y="14" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="100" y="-15" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<Frames>
 		 	<Button parentKey="CraftedItem" inherits="AltoItemIconTemplate">
 				<Anchors>
@@ -20,7 +30,6 @@
 						<Anchor point="LEFT" x="0" y="0" />
 					</Anchors>
 				</ButtonText>
-				<NormalFont style="GameFontNormalLeft"/>
 				<Scripts>
 					<OnEnter>
 						self:GetParent():Link_OnEnter()
@@ -28,7 +37,11 @@
 					<OnLeave>
 						AltoTooltip:Hide()
 					</OnLeave>
+					<OnClick>
+						self:GetParent():RecipeLink_OnClick(button)
+					</OnClick>
 				</Scripts>
+				<NormalFont style="GameFontNormalLeft"/>
 			</Button>
 			
 			<Button parentKey="Reagent1" inherits="AltoItemIconTemplate">

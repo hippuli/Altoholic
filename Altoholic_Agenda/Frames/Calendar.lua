@@ -62,7 +62,7 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 			
 			-- initialize weekdays
 			for i = 1, 7 do
-				local bg =  frame["Weekday"..i.."Background"]
+				local bg =  frame[format("Weekday%dBackground", i)]
 				local left = (band(i, 1) * CALENDAR_WEEKDAY_NORMALIZED_TEX_WIDTH) + CALENDAR_WEEKDAY_NORMALIZED_TEX_LEFT		-- mod(index, 2) * width
 				local right = left + CALENDAR_WEEKDAY_NORMALIZED_TEX_WIDTH
 				local top = CALENDAR_WEEKDAY_NORMALIZED_TEX_TOP
@@ -75,16 +75,21 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 		end,
 		Update = function(frame)
 			-- taken from CalendarFrame_Update() in Blizzard_Calendar.lua, adjusted for my needs.
+			-- The event list must be updated at the beginning !
+			frame.EventList:Update()
 			
-			-- local DateInfo = C_DateAndTime.GetTodaysDate()
-			-- local presentWeekday = DateInfo.weekday
-			-- local presentMonth = DateInfo.month
-			-- local presentDay = DateInfo.monthDay
-			-- local presentYear = DateInfo.year
+			local DateInfo = C_DateAndTime.GetTodaysDate()
+			local presentWeekday = DateInfo.weekday
+			local presentMonth = DateInfo.month
+			local presentDay = DateInfo.monthDay
+			local presentYear = DateInfo.year
 			
-			local CurMonthInfo = dateTime.GetMonthInfo(0, monthOffset)
-			local PrevMonthInfo = dateTime.GetMonthInfo(-1, monthOffset)
-			local NextMonthInfo = dateTime.GetMonthInfo(1, monthOffset)
+			local CurMonthInfo = C_Calendar.GetMonthInfo()
+			local PrevMonthInfo = C_Calendar.GetMonthInfo(-1)
+			local NextMonthInfo = C_Calendar.GetMonthInfo(1)
+			--local CurMonthInfo = dateTime.GetMonthInfo(0, monthOffset)
+			--local PrevMonthInfo = dateTime.GetMonthInfo(-1, monthOffset)
+			--local NextMonthInfo = dateTime.GetMonthInfo(1, monthOffset)
 			local prevMonth, prevYear, prevNumDays = PrevMonthInfo.month, PrevMonthInfo.year, PrevMonthInfo.numDays
 			local nextMonth, nextYear, nextNumDays = NextMonthInfo.month, NextMonthInfo.year, NextMonthInfo.numDays
 			local month, year, numDays, firstWeekday = CurMonthInfo.month, CurMonthInfo.year, CurMonthInfo.numDays, CurMonthInfo.firstWeekday
@@ -94,7 +99,7 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 			
 			-- initialize weekdays
 			for i = 1, 7 do
-				frame["Weekday"..i.."Name"]:SetText(string.sub(CALENDAR_WEEKDAY_NAMES[frame:GetWeekdayIndex(i)], 1, 3))
+				frame[format("Weekday%dName", i)]:SetText(string.sub(CALENDAR_WEEKDAY_NAMES[frame:GetWeekdayIndex(i)], 1, 3))
 			end
 
 			local buttonIndex = 1
@@ -106,7 +111,7 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 			day = prevNumDays - viewablePrevMonthDays
 
 			while ( frame:GetWeekdayIndex(buttonIndex) ~= firstWeekday ) do
-				frame["Day"..buttonIndex]:Update(day, prevMonth, prevYear, isDarkened)
+				frame[format("Day%d", buttonIndex)]:Update(day, prevMonth, prevYear, isDarkened)
 				day = day + 1
 				buttonIndex = buttonIndex + 1
 			end
@@ -115,7 +120,7 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 			day = 1
 			isDarkened = false
 			while ( day <= numDays ) do
-				frame["Day"..buttonIndex]:Update(day, month, year, isDarkened)
+				frame[format("Day%d", buttonIndex)]:Update(day, month, year, isDarkened)
 				day = day + 1
 				buttonIndex = buttonIndex + 1
 			end
@@ -124,13 +129,12 @@ addon:Controller("AltoholicUI.Calendar", { "AltoholicUI.DateTime", function(date
 			day = 1
 			isDarkened = true
 			while ( buttonIndex <= CALENDAR_MAX_DAYS_PER_MONTH ) do
-				frame["Day"..buttonIndex]:Update(day, nextMonth, nextYear, isDarkened)
+				frame[format("Day%d", buttonIndex)]:Update(day, nextMonth, nextYear, isDarkened)
 
 				day = day + 1
 				buttonIndex = buttonIndex + 1
 			end
 
-			frame.EventList:Update()
 			frame:Show()
 		end,
 		InvalidateView = function(frame)

@@ -224,8 +224,8 @@ local lastOptionsPanelWidth = 0
 local lastOptionsPanelHeight = 0
 
 function addon:OnUpdate(self, mandatoryResize)
-	OptionsPanelWidth = InterfaceOptionsFramePanelContainer:GetWidth()
-	OptionsPanelHeight = InterfaceOptionsFramePanelContainer:GetHeight()
+	OptionsPanelWidth = self:GetWidth()
+	OptionsPanelHeight = self:GetHeight()
 	
 	if not mandatoryResize then -- if resize is not mandatory, allow exit
 		if OptionsPanelWidth == lastOptionsPanelWidth and OptionsPanelHeight == lastOptionsPanelHeight then return end		-- no size change ? exit

@@ -57,15 +57,15 @@ Default to an english text.
 
 local factions = {
 	{ id = 69, name = BF["Darnassus"] },
-	-- { id = 930, name = BF["Exodar"] },
-	{ id = 54, name = BF["Gnomeregan"] },
+	{ id = 930, name = BF["Exodar"] },
+	{ id = 54, name = BF["Gnomeregan Exiles"] },
 	{ id = 47, name = BF["Ironforge"] },
 	{ id = 72, name = BF["Stormwind"] },
 	{ id = 530, name = BF["Darkspear Trolls"] },
 	{ id = 76, name = BF["Orgrimmar"] },
 	{ id = 81, name = BF["Thunder Bluff"] },
 	{ id = 68, name = BF["Undercity"] },
-	-- { id = 911, name = BF["Silvermoon City"] },
+	{ id = 911, name = BF["Silvermoon City"] },
 	{ id = 509, name = BF["The League of Arathor"] },
 	{ id = 890, name = BF["Silverwing Sentinels"] },
 	{ id = 730, name = BF["Stormpike Guard"] },
@@ -90,7 +90,7 @@ local factions = {
 	{ id = 59, name = BF["Thorium Brotherhood"] },
 	{ id = 576, name = BF["Timbermaw Hold"] },
 	{ id = 471, name = BF["Wildhammer Clan"] },
-	-- { id = 922, name = BF["Tranquillien"] },
+	{ id = 922, name = BF["Tranquillien"] },
 	{ id = 589, name = BF["Wintersaber Trainers"] },
 	{ id = 270, name = BF["Zandalar Tribe"] },
 	
@@ -227,7 +227,7 @@ local function ScanReputations()
 	
 	for i = 1, GetNumFactions() do		-- 2nd pass, data collection
 		local name, _, _, _, _, earned, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
-		if (earned and earned > 0) then		-- new in 3.0.2, headers may have rep, ex: alliance vanguard + horde expedition
+		if earned then --(earned and earned > 0) then		-- new in 3.0.2, headers may have rep, ex: alliance vanguard + horde expedition
 			if FactionUIDsRev[name] then		-- is this a faction we're tracking ?
 				f[FactionUIDsRev[name]] = earned
 			end
@@ -267,11 +267,18 @@ local function _GetReputationInfo(character, faction)
 	local earned = GetEarnedRep(character, faction)
 	if not earned then return end
 
+	local currentLevel, repEarned, nextLevel, rate
 	local bottom, top = GetLimits(earned)
-	local rate = (earned - bottom) / (top - bottom) * 100
 
 	-- ex: "Revered", 15400, 21000, 73%
-	return BottomLevelNames[bottom], (earned - bottom), (top - bottom), rate 
+	currentLevel = BottomLevelNames[bottom]
+	repEarned = earned - bottom
+	nextLevel = top - bottom
+	rate = repEarned / nextLevel * 100
+
+	return currentLevel, repEarned, nextLevel, rate
+
+--	return BottomLevelNames[bottom], (earned - bottom), (top - bottom), rate 
 end
 
 local function _GetRawReputationInfo(character, faction)

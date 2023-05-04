@@ -15,6 +15,8 @@ local THIS_ACCOUNT = "Default"
 local AddonDB_Defaults = {
 	global = {
 		Options = {
+			CheckLastVisit = true,				-- Check the last auction house visit time or not
+			CheckLastVisitThreshold = 15,
 			AutoClearExpiredItems = true,		-- Automatically clear expired auctions and bids
 		},
 		Characters = {
@@ -23,6 +25,7 @@ local AddonDB_Defaults = {
 				Bids = {},
 				lastUpdate = nil,				-- last time the AH was checked for this char
 				lastVisitDate = nil,			-- in YYYY MM DD  hh:mm, for external apps
+				lastAuctionsScan = nil,		-- last time an auction placed by the player was scanned
 			}
 		}
 	}
@@ -98,15 +101,27 @@ local PublicMethods = {
 	ClearAuctionEntries = _ClearAuctionEntries,
 }
 
--- maximum time left in seconds per auction type : [1] = max 30 minutes, [2] = 2 hours, [3] = 12 hours, [4] = more than 12, but max 24 hours
+-- maximum time left in seconds per auction type : [1] = max 30 minutes, [2] = 2 hours, [3] = 12 hours, [4] = more than 12, but max 48 hours
 -- info : http://www.wowwiki.com/API_GetAuctionItemTimeLeft
-local maxTimeLeft = { 30*60, 2*60*60, 12*60*60, 24*60*60 }
+local maxTimeLeft = { 30*60, 2*60*60, 12*60*60, 48*60*60 }
 
 local function CheckExpiries()
 	local AHTypes = { "Auctions", "Bids" }
 	local timeLeft, diff
 	
+	local checkLastVisit = GetOption("CheckLastVisit")
+	local threshold = GetOption("CheckLastVisitThreshold")
+	local autoClear = GetOption("AutoClearExpiredItems")
+	
 	for key, character in pairs(addon.db.global.Characters) do
+		-- Check if the last auction visit was maybe a very long time ago, and warn the player that he may have missed items..
+		if checkLastVisit and character.lastAuctionsScan then
+			local seconds = time() - character.lastAuctionsScan
+			local days = floor(seconds / 86400)
+			
+			addon:SendMessage("DATASTORE_AUCTIONS_NOT_CHECKED_SINCE", character, key, days, threshold)
+		end
+		
 		for _, ahType in pairs(AHTypes) do					-- browse both auctions & bids
 			for index = #character[ahType], 1, -1 do		-- from last to first, to make sure table.remove does not screw up indexes.
 				timeLeft = select(7, _GetAuctionHouseItemInfo(character, ahType, index))
@@ -115,7 +130,7 @@ local function CheckExpiries()
 				end
 
 				diff = time() - character.lastUpdate
-				if diff > maxTimeLeft[timeLeft] then	-- has expired
+				if diff > maxTimeLeft[timeLeft] and autoClear then -- has expired
 					table.remove(character[ahType], index)
 				end
 			end
@@ -137,6 +152,7 @@ end
 
 function addon:OnEnable()
 	addon:RegisterEvent("AUCTION_HOUSE_SHOW")
+	addon:RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW")
 	addon:SetupOptions()
 	
 	if GetOption("AutoClearExpiredItems") then
@@ -146,6 +162,7 @@ end
 
 function addon:OnDisable()
 	addon:UnregisterEvent("AUCTION_HOUSE_SHOW")
+	addon:UnregisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW")
 end
 
 local function GetAuctionHouseZone()
@@ -214,14 +231,32 @@ local function ScanBids()
 end
 
 -- *** EVENT HANDLERS ***
+function addon:PLAYER_INTERACTION_MANAGER_FRAME_SHOW(eventName, ...)
+	local paneType = ...
+	
+	if paneType ==  Enum.PlayerInteractionType.Auctioneer then 
+		addon:AUCTION_HOUSE_SHOW()
+	end
+end
+
 function addon:AUCTION_HOUSE_SHOW()
 	addon:RegisterEvent("AUCTION_HOUSE_CLOSED")
+	addon:RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_HIDE")
 	addon:RegisterEvent("AUCTION_OWNED_LIST_UPDATE", ScanAuctions)
 	addon:RegisterEvent("AUCTION_BIDDER_LIST_UPDATE", ScanBids)
 end
 
+function addon:PLAYER_INTERACTION_MANAGER_FRAME_HIDE(eventName, ...)
+	local paneType = ...
+	
+	if paneType ==  Enum.PlayerInteractionType.Auctioneer then 
+		addon:AUCTION_HOUSE_CLOSED()
+	end
+end
+
 function addon:AUCTION_HOUSE_CLOSED()
 	addon:UnregisterEvent("AUCTION_HOUSE_CLOSED")
+	addon:UnregisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_HIDE")
 	addon:UnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
 	addon:UnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
 end

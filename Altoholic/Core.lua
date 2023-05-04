@@ -4,8 +4,8 @@ _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "A
 
 local addon = _G[addonName]
 
-addon.Version = "v3.4.002"
-addon.VersionNum = 304002
+addon.Version = "v3.4.003"
+addon.VersionNum = 304003
 
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 local commPrefix = addonName
@@ -70,6 +70,7 @@ local AddonDB_Defaults = {
 			},
 		},
 		unsafeItems = {},
+		moreRecentVersion = nil,
 		options = {
 			-- ** Summary tab options **
 			["UI.Tabs.Summary.ShowRestXP150pc"] = false,						-- display max rest xp in normal 100% mode or in level equivalent 150% mode ?
@@ -78,8 +79,8 @@ local AddonDB_Defaults = {
 			["UI.Tabs.Summary.CurrentRealms"] = 2,								-- selected realms (current/all in current/all accounts)
 			["UI.Tabs.Summary.CurrentFactions"] = 3,							-- 1 = Alliance, 2 = Horde, 3 = Both
 			["UI.Tabs.Summary.CurrentLevels"] = 1,								-- 1 = All
-			["UI.Tabs.Summary.CurrentLevelsMin"] = 1,							
-			["UI.Tabs.Summary.CurrentLevelsMax"] = 80,					
+			["UI.Tabs.Summary.CurrentLevelsMin"] = 1,
+			["UI.Tabs.Summary.CurrentLevelsMax"] = 80,
 			["UI.Tabs.Summary.CurrentClasses"] = 0,							-- 0 = All
 			["UI.Tabs.Summary.CurrentTradeSkill"] = 0,						-- 0 = All
 			["UI.Tabs.Summary.SortAscending"] = true,							-- ascending or descending sort order
@@ -226,7 +227,7 @@ LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject(addonName, {
 })
 
 
-
+-- *** Guild Comm ***
 local guildMembersVersion = {} 	-- hash table containing guild member info
 
 -- Message types
@@ -260,6 +261,13 @@ local function OnSendVersion(sender, version)
 		GuildWhisper(sender, MSG_VERSION_REPLY, addon.Version)		-- reply by sending my own version
 	end
 	SaveVersion(sender, version)											-- .. and save it
+	
+	if versionNum and versionNum > addon.VersionNum and not addon.db.global.moreRecentVersion then
+		addon:Print(L["NEW_VERSION_AVAILABLE"])
+		addon:Print(L["OFFICIAL_SOURCES"])
+
+		addon.db.global.moreRecentVersion = addon.VersionNum
+	end
 end
 
 local function OnVersionReply(sender, version)
@@ -439,18 +447,21 @@ end
 tinsert(UISpecialFrames, "AltoholicFrame")
 tinsert(UISpecialFrames, "AltoMessageBox")
 
-function addon:CmdSearchBags(arg1, arg2)
-	-- arg 1 is a table, no idea of what it does, investigate later, only  arg2 matters at this point
-	
-	if string.len(arg2) == 0 then
+function addon:CmdSearchBags(arg1, searchText)
+	-- arg 1 is a table, no idea of what it does, investigate later, only  arg2(searchText) matters at this point
+
+	if not searchText or string.len(searchText) == 0 then
 		addon:Print("|cFF00FF9A" .. L["Altoholic:|r Usage = /altoholic search <item name>"])
 		return
 	end
-	
+
 	if not (AltoholicFrame:IsVisible()) then
 		AltoholicFrame:Show()
 	end
-	AltoholicFrame_SearchEditBox:SetText(strlower(arg2))
+
+	searchText =  strlower(searchText)
+
+	AltoholicFrame_SearchEditBox:SetText(searchText)
 	addon.Tabs:OnClick("Search")
 	addon.Search:FindItem()
-end	
+end

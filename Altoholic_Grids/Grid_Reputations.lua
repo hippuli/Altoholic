@@ -24,6 +24,7 @@ local Factions = {
 		{	-- [1]
 			name = FACTION_ALLIANCE,	-- 469
 			{ name = DataStore:GetFactionName(69), icon = Texture("Achievement_Character_Nightelf_Female") },	-- "Darnassus"
+			{ name = DataStore:GetFactionName(930), icon = Texture("Achievement_Character_Draenei_Male") },	--  name = "Exodar"
 			{ name = DataStore:GetFactionName(54), icon = Texture("INV_Misc_Head_Gnome_02") },	-- "Gnomeregan"
 			{ name = DataStore:GetFactionName(47), icon = Texture("Achievement_Character_Dwarf_Male") },		-- "Ironforge"
 			{ name = DataStore:GetFactionName(72), icon = Texture("INV_Misc_Head_Human_01") },		-- "Stormwind"
@@ -34,6 +35,7 @@ local Factions = {
 			{ name = DataStore:GetFactionName(76), icon = Texture("INV_Misc_Head_Orc_01") },		-- "Orgrimmar"
 			{ name = DataStore:GetFactionName(81), icon = Texture("INV_Misc_Head_Tauren_01") },		-- "Thunder Bluff"
 			{ name = DataStore:GetFactionName(68), icon = Texture("INV_Misc_Head_Undead_02") },		-- "Undercity"
+			{ name = DataStore:GetFactionName(911), icon = Texture("Achievement_Character_Bloodelf_Male") },		-- "Silvermoon City"
 		},
 		{	-- [3]
 			name = L["Alliance Forces"],	-- 891
@@ -70,6 +72,7 @@ local Factions = {
 			{ name = DataStore:GetFactionName(59), icon = Texture("INV_Ingot_Thorium") },		-- "Thorium Brotherhood" 
 			{ name = DataStore:GetFactionName(576), icon = Texture("inv_misc_horn_01") },		-- "Timbermaw Hold" 
 			{ name = DataStore:GetFactionName(471), icon = Texture("INV_Misc_Head_Dwarf_01") },		-- "Wildhammer Clan" 
+			{ name = DataStore:GetFactionName(922), icon = Texture("Achievement_Zone_Ghostlands") },		-- "Tranquillien" 
 			{ name = DataStore:GetFactionName(589), icon = Texture("Ability_Mount_PinkTiger") },		-- "Wintersaber Trainers" 
 			{ name = DataStore:GetFactionName(270), icon = Texture("INV_Bijou_Green") },		-- "Zandalar Tribe" 
 		}
@@ -106,7 +109,7 @@ local Factions = {
 		}
 	},
 	{	-- [3]
-		name = EXPANSION_NAME2,	-- "Wrath of the Lich King",
+		name = EXPANSION_NAME2,	-- "Wrath of the Lich King"
 		{	-- [1]
 			name = GetRealZoneText(571),	-- Northrend
 			{ name = DataStore:GetFactionName(1106), icon = Texture("Achievement_Reputation_ArgentCrusader") },		-- "Argent Crusade"
@@ -282,7 +285,7 @@ local callbacks = {
 	RowSetup = function(self, rowFrame, dataRowID)
 			currentFaction = view[dataRowID]
 
-			rowFrame.Name.Text:SetText(colors.white .. currentFaction.name)
+			rowFrame.Name.Text:SetText(format("%s%s", colors.white, currentFaction.name))
 			rowFrame.Name.Text:SetJustifyH("LEFT")
 		end,
 	RowOnEnter = function()	end,
@@ -292,10 +295,14 @@ local callbacks = {
 			
 			button.Background:SetTexture(faction.icon)
 			if faction.left then		-- if it's not a full texture, use tcoords
+				-- addon:Print("ReputationGrid : not full texture") --debug
+				-- button.Background:SetTexture(faction.icon)
 				button.Background:SetTexCoord(faction.left, faction.right, faction.top, faction.bottom)
 			else
+				-- addon:Print("ReputationGrid : is full texture") --debug
+				-- button.Background:SetTexture(format("Interface\\Icons\\%s", faction.icon))
 				button.Background:SetTexCoord(0, 1, 0, 1)
-			end		
+			end
 			
 			button.Name:SetFontObject("GameFontNormalSmall")
 			button.Name:SetJustifyH("CENTER")
@@ -305,14 +312,14 @@ local callbacks = {
 			local status, _, _, rate = DataStore:GetReputationInfo(character, faction.name)
 			if status and rate then 
 				local text
-				if status == FACTION_STANDING_LABEL8 then
-					text = icons.ready
+				if status == FACTION_STANDING_LABEL8 then	-- If exalted .. 
+					text = icons.ready						-- .. just show the green check
 				else
 					button.Background:SetDesaturated(true)
 					button.Name:SetFontObject("NumberFontNormalSmall")
 					button.Name:SetJustifyH("RIGHT")
 					button.Name:SetPoint("BOTTOMRIGHT", 0, 0)
-					text = format("%2d", floor(rate)) .. "%"
+					text = format("%2d%%", floor(rate))
 				end
 
 				local vc = VertexColors[status]
@@ -325,9 +332,9 @@ local callbacks = {
 
 				button.key = character
 				button:SetID(dataRowID)
-				button.Name:SetText(color..text)
+				button.Name:SetText(format("%s%s", color, text))
 			else
-				button.Background:SetVertexColor(0.3, 0.3, 0.3);	-- greyed out
+				button.Background:SetVertexColor(0.3, 0.3, 0.3)	-- greyed out
 				button.Name:SetText(icons.notReady)
 				button:SetID(0)
 				button.key = nil
@@ -343,10 +350,11 @@ local callbacks = {
 			if not status then return end
 			
 			AltoTooltip:SetOwner(frame, "ANCHOR_LEFT");
-			AltoTooltip:ClearLines();
-			AltoTooltip:AddLine(DataStore:GetColoredCharacterName(character) .. colors.white .. " @ " ..	colors.teal .. faction,1,1,1);
+			AltoTooltip:ClearLines()
+			AltoTooltip:AddLine(format("%s %s@ %s%s",
+				DataStore:GetColoredCharacterName(character), colors.white, colors.teal, faction),1,1,1)
 
-			rate = format("%d", floor(rate)) .. "%"
+			rate = format("%d%%", floor(rate))
 			AltoTooltip:AddLine(format("%s: %d/%d (%s)", status, currentLevel, maxLevel, rate),1,1,1 )
 						
 			local bottom = DataStore:GetRawReputationInfo(character, faction)
@@ -361,6 +369,8 @@ local callbacks = {
 			AltoTooltip:AddLine(FACTION_STANDING_LABEL6, 0.0, 1.0, 0.8)
 			AltoTooltip:AddLine(FACTION_STANDING_LABEL7, 1.0, 0.4, 1.0)
 			AltoTooltip:AddLine(format("%s = %s", icons.ready, FACTION_STANDING_LABEL8), 1, 1, 1)
+			AltoTooltip:AddLine(" ",1,1,1)
+			AltoTooltip:AddLine(format("%s%s", colors.green, L["Shift+Left click to link"]))
 			AltoTooltip:Show()
 		end,
 	OnClick = function(frame, button)
@@ -371,7 +381,7 @@ local callbacks = {
 			local status, currentLevel, maxLevel, rate = DataStore:GetReputationInfo(character, faction)
 			if not status then return end
 			
-			if ( button == "LeftButton" ) and ( IsShiftKeyDown() ) then
+			if button == "LeftButton" and IsShiftKeyDown() then
 				local chat = ChatEdit_GetLastActiveWindow()
 				if chat:IsShown() then
 					chat:Insert(format(L["%s is %s with %s (%d/%d)"], DataStore:GetCharacterName(character), status, faction, currentLevel, maxLevel))

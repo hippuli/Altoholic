@@ -17,7 +17,7 @@ local function UpdateBagIndices(bag, size)
 	local lowerLimit = 1
 
 	while size > 0 do					-- as long as there are slots to process ..
-		table.insert(bagIndices, { bagID=bag, from=lowerLimit} )
+		table.insert(bagIndices, { bagID = bag, from = lowerLimit} )
 	
 		if size <= 12 then			-- no more lines ? leave
 			return
@@ -106,7 +106,7 @@ local function UpdateSpread()
 			itemButton:SetInfo(nil, nil)
 			
 			-- Columns 3 to 14 : bag content
-			for j=3, 14 do
+			for j = 3, 14 do
 				itemButton = rowFrame["Item"..j]
 				
 				local slotID = bagIndices[line].from - 3 + j
