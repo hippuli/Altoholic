@@ -2,6 +2,12 @@ Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
 
+3.4.004 (04/05/2023)
+
+- Updated Ace Libraries
+- DataStore_Mails : fixed the events triggered when opening the mailbox AGAIN !
+- DataStore_Spells : fixed toc files to use the same version as retail (wrong push in previous version).
+
 3.4.003 (03/05/2023)
 
 Most changes in this release are from TechnoHunter, many thanks for his support !

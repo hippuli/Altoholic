@@ -2,6 +2,10 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.05.04 (04/05/2023)
+
+- DataStore_Mails : fixed the events triggered when opening the mailbox AGAIN !
+
 Version 2023.05.03 (03/05/2023)
 
 - ToC Update for 10.1
