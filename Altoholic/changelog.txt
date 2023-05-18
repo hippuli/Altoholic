@@ -2,6 +2,12 @@ Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
 
+3.4.005 (18/05/2023)
+
+- DataStore_Agenda is now generic and works will all versions of the game.
+- DataStore_Currencies is now generic and works will all versions of the game.
+- Agenda tab : fixed the calendar not showing calendar events.
+
 3.4.004 (04/05/2023)
 
 - Updated Ace Libraries

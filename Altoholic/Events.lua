@@ -108,7 +108,7 @@ local eventTypes = {
 				inviteStatus = tonumber(inviteStatus)
 				
 				local desc
-				if type(inviteStatus) == "number" and (inviteStatus > 1) and (inviteStatus < 8) then
+				if type(inviteStatus) == "number" and (inviteStatus >= 1) and (inviteStatus <= 8) then
 					local StatusText = {
 						CALENDAR_STATUS_INVITED,		-- CALENDAR_INVITESTATUS_INVITED   = 1
 						CALENDAR_STATUS_ACCEPTED,		-- CALENDAR_INVITESTATUS_ACCEPTED  = 2
@@ -448,7 +448,7 @@ function ns:BuildList()
 					local eventDate, eventTime = DataStore:GetCalendarEventInfo(character, i)
 					
 					-- TODO: do not add declined invitations
-					AddEvent(CALENDAR_LINE, eventDate, eventTime, characterName, realm, i)
+					AddEvent(CALENDAR_LINE, eventDate, eventTime, characterName, realm, account, i)
 				end
 				
 				-- Salt Shaker
