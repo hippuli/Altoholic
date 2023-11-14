@@ -10,7 +10,6 @@ _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "A
 
 local addon = _G[addonName]
 
-local THIS_ACCOUNT = "Default"
 local commPrefix = "DS_Inv"		-- let's keep it a bit shorter than the addon name, this goes on a comm channel, a byte is a byte ffs :p
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
@@ -27,6 +26,13 @@ local AddonDB_Defaults = {
 			BroadcastAiL = true,						-- Broadcast professions at login or not
 			EquipmentRequestNotification = false,	-- Get a warning when someone requests my equipment
 		},
+		Reference = {
+			AppearancesCounters = {},				-- ex: ["MAGE"] = { [1] = "76/345" ... }	= category 1 => 76/345
+			CollectedSets = {},						-- ex: [setID] = true, list of collected sets
+			SetNumItems = {},							-- ex: [setID] = 8, number of pieces in a set
+			SetNumCollected = {},					-- ex: [setID] = 4, number of collected pieces in a set
+			SetIconIDs = {},							-- ex: [setID] = itemID, itemID of the icon that represents the set
+		},
 		Guilds = {
 			['*'] = {			-- ["Account.Realm.Name"] 
 				Members = {
@@ -42,6 +48,7 @@ local AddonDB_Defaults = {
 			['*'] = {				-- ["Account.Realm.Name"] 
 				lastUpdate = nil,
 				averageItemLvl = 0,
+				overallAIL = 0,
 				Inventory = {},		-- 19 inventory slots, a simple table containing item id's or full item string if enchanted
 			}
 		}
@@ -75,7 +82,7 @@ local function GetMemberKey(guild, member)
 	--	Or it's a guild member ==> point to the guild table
 	local main = DataStore:GetNameOfMain(member)
 	if main and main == UnitName("player") then
-		local key = format("%s.%s.%s", THIS_ACCOUNT, GetRealmName(), member)
+		local key = format("%s.%s.%s", DataStore.ThisAccount, DataStore.ThisRealm, member)
 		return addon.db.global.Characters[key]
 	end
 	return guild.Members[member]
@@ -136,51 +143,36 @@ local function ClearGuildInventories()
 end
 
 
---stubs for OnGetItemInfoReceived/CalculateAverageItemLevel (Will be redefined after ScanInventory)
-local function OnGetItemInfoReceived(event, itemID, success) return end
-local function CalculateAverageItemLevel() return end
-
---[[-- debug function
-function ClearInventory()
-	local inventory = addon.ThisCharacter.Inventory
-	wipe(inventory)
-end
---]]--
-
 -- *** Scanning functions ***
-local function ScanInventory()
-	local totalItemLevel = 0
-	local itemCount = 0	
-	
-	local inventory = addon.ThisCharacter.Inventory
-	wipe(inventory)
-	
-	for i = 1, NUM_EQUIPMENT_SLOTS do
-		local link = GetInventoryItemLink("player", i)
-		if link then
-			if IsEnchanted(link) then		-- if there's an enchant, save the full link
-				inventory[i] = link
-			else 									-- .. otherwise, only save the id
-				inventory[i] = tonumber(link:match("item:(%d+)"))
-			end		
+local handleItemInfo
+
+local function ScanAverageItemLevel()
+
+	-- GetAverageItemLevel only exists in retail
+	if type(GetAverageItemLevel) == "function" then
+
+		local overallAiL, AiL = GetAverageItemLevel()
+		if overallAiL and AiL and overallAiL > 0 and AiL > 0 then
+			local character = addon.ThisCharacter
+			character.overallAIL = overallAiL
+			character.averageItemLvl = AiL
 		end
+		return
 	end
-
-	CalculateAverageItemLevel()
-	addon.ThisCharacter.lastUpdate = time()
-end
-
--- Average item level can only be calculated after the item info is cached
-local function CalculateAverageItemLevel()
+	
+	-- if we get here, GetAverageItemLevel does not exist, we must calculate manually.
 	local totalItemLevel = 0
-	local itemCount = 0	
+	local itemCount = 0
+	
 	for i = 1, NUM_EQUIPMENT_SLOTS do
 		local link = GetInventoryItemLink("player", i)
 		if link then
+		
 			local itemName = GetItemInfo(link)
-			if itemName == nil then
+			if not itemName then
 				--print("Waiting for equipment slot "..i) --debug
-				addon:RegisterEvent("GET_ITEM_INFO_RECEIVED", OnGetItemInfoReceived)
+				handleItemInfo = true
+				-- addon:RegisterEvent("GET_ITEM_INFO_RECEIVED", OnGetItemInfoReceived)
 				return -- wait for GET_ITEM_INFO_RECEIVED (will be triggered by non-cached itemInfo request)
 			end
 
@@ -190,23 +182,176 @@ local function CalculateAverageItemLevel()
 			end
 		end
 	end
+	
+	-- Found by qwarlocknew on 6/04/2021
+	-- On an alt with no gear, the "if link" in the loop could always be nil, and thus the itemCount could be zero
+	-- leading to a division by zero, so intercept this case
 	--print(format("total: %d, count: %d, ail: %d",totalItemLevel, itemCount, totalItemLevel / itemCount)) --DAC
 	addon.ThisCharacter.averageItemLvl = totalItemLevel / math.max(itemCount, 1) -- math.max fixes divide by zero (bug credit: qwarlocknew)
+	addon.ThisCharacter.lastUpdate = time()	
+end
+
+local function ScanInventorySlot(slot)
+	local inventory = addon.ThisCharacter.Inventory
+	local link = GetInventoryItemLink("player", slot)
+
+	local currentContent = inventory[slot]
+	
+	if link then 
+		if IsEnchanted(link) then		-- if there's an enchant, save the full link
+			inventory[slot] = link
+		else 									-- .. otherwise, only save the id
+			inventory[slot] = tonumber(link:match("item:(%d+)"))
+		end
+	else
+		inventory[slot] = nil
+	end
+	
+	if currentContent ~= inventory[slot] then		-- the content of this slot has actually changed since last scan
+		addon:SendMessage("DATASTORE_INVENTORY_SLOT_UPDATED", slot)
+	end
+end
+
+local function ScanInventory()
+	for slot = 1, NUM_EQUIPMENT_SLOTS do
+		ScanInventorySlot(slot)
+	end
+	
 	addon.ThisCharacter.lastUpdate = time()
 end
+
+local function ScanTransmogCollection()
+	local _, englishClass = UnitClass("player")
+	
+	local counters = addon.db.global.Reference.AppearancesCounters
+	
+	counters[englishClass] = counters[englishClass] or {}
+	local classCounters = counters[englishClass]
+	local name
+	local collected, total
+	
+	-- browse all categories
+	for i = 1, DataStore:GetHashSize(Enum.TransmogCollectionType) - 1 do
+		name = C_TransmogCollection.GetCategoryInfo(i)
+		if name then
+			collected = C_TransmogCollection.GetCategoryCollectedCount(i)
+			total = C_TransmogCollection.GetCategoryTotal(i)
+
+			classCounters[i] = format("%s/%s", collected, total)		-- [1] = "76/345" ...
+		end
+	end
+end
+
+local classMasks = {
+	[1] = "WARRIOR",
+	[2] = "PALADIN",
+	[4] = "HUNTER",
+	[8] = "ROGUE",
+	[16] = "PRIEST",
+	[32] = "DEATHKNIGHT",
+	[64] = "SHAMAN",
+	[128] = "MAGE",
+	[256] = "WARLOCK",
+	[512] = "MONK",
+	[1024] = "DRUID",
+	[2048] = "DEMONHUNTER",
+	[4096] = "EVOKER"
+}
+
+local classArmorMask = {
+	["WARRIOR"] = 35, -- Warrior (1) + Paladin (2) + DeathKnight (32)
+	["PALADIN"] = 35, -- Warrior (1) + Paladin (2) + DeathKnight (32)
+	["DEATHKNIGHT"] = 35, -- Warrior (1) + Paladin (2) + DeathKnight (32)
+	["PRIEST"] = 400, -- Priest (16) + Mage (128) + Warlock (256)
+	["MAGE"] = 400, -- Priest (16) + Mage (128) + Warlock (256)
+	["WARLOCK"] = 400, -- Priest (16) + Mage (128) + Warlock (256)
+	["ROGUE"] = 3592, -- Rogue (8) + Monk (512) + Druid (1024) + DemonHunter (2048)
+	["MONK"] = 3592, -- Rogue (8) + Monk (512) + Druid (1024) + DemonHunter (2048)
+	["DRUID"] = 3592, -- Rogue (8) + Monk (512) + Druid (1024) + DemonHunter (2048)
+	["DEMONHUNTER"] = 3592, -- Rogue (8) + Monk (512) + Druid (1024) + DemonHunter (2048)
+	["HUNTER"] = 4164, -- Hunter (4) + Shaman (64) + Evoker (4096)
+	["SHAMAN"] = 4164, -- Hunter (4) + Shaman (64) + Evoker (4096)
+	["EVOKER"] = 4164, -- Hunter (4) + Shaman (64) + Evoker (4096)
+}
+
+local function ScanTransmogSets()
+	local _, englishClass = UnitClass("player")
+	local collectedSets = addon.db.global.Reference.CollectedSets
+	-- counters[englishClass] = counters[englishClass] or {}
+	-- local classCounters = counters[englishClass]
+
+	local sets = C_TransmogSets.GetAllSets()
+	if not sets then return end
+
+	for _, set in pairs(sets) do
+		local class = classMasks[set.classMask]
+		
+		if classArmorMask[englishClass] == set.classMask then class = englishClass end
+
+		if class == englishClass then
+			local setID = set.setID
+
+			local appearances = C_TransmogSets.GetSetPrimaryAppearances(set.setID)
+			local numTotal = 0
+			local numCollected = 0
+
+			for _, appearance in pairs(appearances) do
+				numTotal = numTotal + 1
+				if appearance.collected then
+					numCollected = numCollected + 1
+
+					collectedSets[setID] = collectedSets[setID] or {}
+					collectedSets[setID][appearance.appearanceID] = true
+				end
+			end
+
+			if numTotal == numCollected then
+				collectedSets[set.setID] = nil	-- if set is complete, kill the table, the counters will tell it
+			end
+
+			addon.db.global.Reference.SetNumItems[setID] = numTotal
+			addon.db.global.Reference.SetNumCollected[setID] = (numCollected ~= 0) and numCollected or nil
+		end
+	end
+end
+
 
 -- *** Event Handlers ***
 local function OnPlayerAlive()
 	ScanInventory()
+	ScanAverageItemLevel()
+	
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		ScanTransmogSets()
+	end
 end
 
 local function OnPlayerEquipmentChanged(event, slot)
-	ScanInventory()
+	ScanInventorySlot(slot)
+	ScanAverageItemLevel()
+	addon.ThisCharacter.lastUpdate = time()
+end
+
+local function OnPlayerAilReady()
+	ScanAverageItemLevel()
+end
+
+local function OnTransmogCollectionLoaded()
+	ScanTransmogCollection()
+	ScanTransmogSets()
+end
+
+local function OnTransmogCollectionUpdated()
+	ScanTransmogCollection()
+	ScanTransmogSets()
 end
 
 local function OnGetItemInfoReceived(event, itemID, success)
-	CalculateAverageItemLevel()
-	addon:UnregisterEvent("GET_ITEM_INFO_RECEIVED")
+	-- ignore calls unless otherwise specified
+	if handleItemInfo then
+		ScanAverageItemLevel()
+		handleItemInfo = nil
+	end
 end
 
 -- ** Mixins **
@@ -233,7 +378,13 @@ local function _GetInventoryItemCount(character, searchedID)
 end
 	
 local function _GetAverageItemLevel(character)
-	return character.averageItemLvl
+	return character.averageItemLvl, character.overallAIL
+end
+
+local function _IterateInventory(character, callback)
+	for _, item in pairs(character.Inventory) do
+		callback(item)
+	end
 end
 
 local sentRequests		-- recently sent requests
@@ -285,6 +436,61 @@ local function _GetGuildMemberAverageItemLevel(guild, member)
 	end
 end
 
+local function _GetSetIcon(setID)
+	local iconIDs = addon.db.global.Reference.SetIconIDs
+
+	-- no cached item id ? look for one
+	if not iconIDs[setID] then 
+		-- coming from Blizzard_Wardrobe.lua:
+		-- WardrobeSetsDataProviderMixin:GetSetSourceData
+		-- WardrobeSetsDataProviderMixin:GetSortedSetSources
+		local apppearances = C_TransmogSets.GetSetPrimaryAppearances(setID)
+		
+		for _, appearance in pairs(apppearances) do
+			local info = C_TransmogCollection.GetSourceInfo(appearance.appearanceID)
+			
+			-- 2 = head slot, couldn't find the constant for that :(
+			if info and info.invType == 2 then	
+				iconIDs[setID] = info.itemID
+				break	-- we found the item we were looking for, leave the loop
+			end
+		end
+	end
+
+	if iconIDs[setID] then
+		local _, _, _, _, icon = GetItemInfoInstant(iconIDs[setID])
+		return icon
+	end
+	return QUESTION_MARK_ICON
+end
+
+local function _IsSetCollected(setID)
+	local ref = addon.db.global.Reference
+
+	-- should not be nil, but default to -1 to fail comparison below
+	local numTotal = ref.SetNumItems[setID] or -1
+
+	-- may be nil (= 0 collected)
+	local numCollected = ref.SetNumCollected[setID] or 0
+
+	return (numCollected == numTotal)
+end
+
+local function _IsSetItemCollected(setID, sourceID)
+	local set = addon.db.global.Reference.CollectedSets[setID]
+	return (set and set[sourceID])
+end
+
+local function _GetCollectedSetInfo(setID)
+	local ref = addon.db.global.Reference
+
+	local numTotal = ref.SetNumItems[setID] or 0
+	local numCollected = ref.SetNumCollected[setID] or 0
+
+	return numCollected, numTotal
+end
+
+
 local PublicMethods = {
 	GetInventory = _GetInventory,
 	GetInventoryItem = _GetInventoryItem,
@@ -294,6 +500,15 @@ local PublicMethods = {
 	GetGuildMemberInventoryItem = _GetGuildMemberInventoryItem,
 	GetGuildMemberAverageItemLevel = _GetGuildMemberAverageItemLevel,
 }
+
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+	PublicMethods.IterateInventory = _IterateInventory
+	PublicMethods.GetSetIcon = _GetSetIcon
+	PublicMethods.IsSetCollected = _IsSetCollected
+	PublicMethods.IsSetItemCollected = _IsSetItemCollected
+	PublicMethods.GetCollectedSetInfo = _GetCollectedSetInfo
+end
+
 
 -- *** Guild Comm ***
 local function OnGuildAltsReceived(self, sender, alts)
@@ -346,6 +561,11 @@ function addon:OnInitialize()
 	DataStore:SetCharacterBasedMethod("GetInventoryItem")
 	DataStore:SetCharacterBasedMethod("GetInventoryItemCount")
 	DataStore:SetCharacterBasedMethod("GetAverageItemLevel")
+	
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		DataStore:SetCharacterBasedMethod("IterateInventory")
+	end
+	
 	DataStore:SetGuildBasedMethod("GetGuildMemberInventoryItem")
 	DataStore:SetGuildBasedMethod("GetGuildMemberAverageItemLevel")
 	
@@ -356,6 +576,14 @@ end
 function addon:OnEnable()
 	addon:RegisterEvent("PLAYER_ALIVE", OnPlayerAlive)
 	addon:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", OnPlayerEquipmentChanged)
+	
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		-- addon:RegisterEvent("PLAYER_AVG_ITEM_LEVEL_READY", OnPlayerAilReady)
+		-- addon:RegisterEvent("TRANSMOG_COLLECTION_LOADED", OnTransmogCollectionLoaded)
+		addon:RegisterEvent("TRANSMOG_COLLECTION_UPDATED", OnTransmogCollectionUpdated)
+	else
+		addon:RegisterEvent("GET_ITEM_INFO_RECEIVED", OnGetItemInfoReceived)
+	end
 	
 	addon:SetupOptions()
 	

@@ -192,11 +192,11 @@ local function RestoreHeaders()
 	wipe(headersState)
 end
 
-local function ScanChoices(rewards)
+local function ScanChoices(rewards, questID)
 	-- rewards = out parameter
 
 	-- these are the actual item choices proposed to the player
-	for i = 1, GetNumQuestLogChoices() do
+	for i = 1, GetNumQuestLogChoices(questID) do
 		local _, _, numItems, _, isUsable = GetQuestLogChoiceInfo(i)
 		isUsable = isUsable and 1 or 0	-- this was 1 or 0, in WoD, it is a boolean, convert back to 0 or 1
 		local link = GetQuestLogItemLink("choice", i)
@@ -226,18 +226,15 @@ local function ScanRewards(rewards)
 	end
 end
 
-local function ScanRewardSpells(rewards)
+local function ScanRewardSpells(rewards, questID)
 	-- rewards = out parameter
 			
-	for index = 1, GetNumQuestLogRewardSpells() do
-		local _, _, isTradeskillSpell, isSpellLearned = GetQuestLogRewardSpell(index)
-		if isTradeskillSpell or isSpellLearned then
-			local link = GetQuestLogSpellLink(index)
-			if link then
-				local id = tonumber(link:match("spell:(%d+)"))
-				if id then
-					table.insert(rewards, format("s|%d", id))
-				end
+	for _, spellID in ipairs(C_QuestInfoSystem.GetQuestRewardSpells(questID) or {}) do
+		if spellID and spellID > 0 then
+			local spellInfo = C_QuestInfoSystem.GetQuestRewardSpellInfo(questID, spellID);
+
+			if spellInfo and (spellInfo.isTradeskill or spellInfo.isSpellLearned) then
+				table.insert(rewards, format("s|%d", spellID))
 			end
 		end
 	end
@@ -305,9 +302,9 @@ local function ScanQuests()
 			money[lastQuestIndex] = GetQuestLogRewardMoney()
 
 			wipe(rewardsCache)
-			ScanChoices(rewardsCache)
+			ScanChoices(rewardsCache, questID)
 			ScanRewards(rewardsCache)
-			ScanRewardSpells(rewardsCache)
+			ScanRewardSpells(rewardsCache, questID)
 
 			if #rewardsCache > 0 then
 				rewards[lastQuestIndex] = table.concat(rewardsCache, ",")

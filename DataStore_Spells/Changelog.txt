@@ -2,6 +2,10 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.11.06 (06/11/2023)
+
+- ToC Update for all versions
+
 Version 2023.02.23 (23/02/2022)
 
 - ToC Update for 10.0.05

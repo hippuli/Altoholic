@@ -10,6 +10,7 @@ _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "A
 
 local addon = _G[addonName]
 
+local isCoreDataMissing
 local MAX_LOGOUT_TIMESTAMP = 5000000000	-- 5 billion, current values are at ~1.4 billion, in seconds, that leaves us 110+ years, I think we're covered..
 
 -- Replace RAID_CLASS_COLORS which is not always loaded when we need it.
@@ -220,6 +221,13 @@ local function _GetCharacterClass(character)
 end
 
 local function _GetColoredCharacterName(character)
+	-- check if name and englishClass are present, if they are not, core info is missing for at least one alt.
+	-- but we can't say which.. and there might be many, so only show the message once.
+	if (not character.name or not character.englishClass) and not isCoreDataMissing then
+		addon:Print("Core information about one or more characters is missing. Be sure to logout and login again with that character.\nThe add-on should be enabled while no character is logged in, otherwise character information cannot properly be read!")
+		isCoreDataMissing = true
+	end
+
 	return format("%s%s", classColors[character.englishClass], character.name)
 end
 	

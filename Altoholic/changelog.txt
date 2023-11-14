@@ -1,6 +1,16 @@
 Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
+3.4.007 (14/11/2023)
+
+- DataStore_Containers: The module is now shared between all versions of the game.
+
+3.4.006 (06/11/2023)
+
+- DataStore_Quests : updated ScanChoices and ScanRewardSpells to use the questID. (Thanks Technohunter)
+- Accout Summary : fixed the tests that were using MAX_PLAYER_LEVEL, now using MAX_PLAYER_LEVEL_TABLE instead. (Thanks Technohunter)
+- DataStore_Auctions is now generic and works will all versions of the game.
+- DataStore_Inventory is now generic and works will all versions of the game.
 
 3.4.005 (18/05/2023)
 

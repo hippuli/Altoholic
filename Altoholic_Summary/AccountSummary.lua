@@ -498,7 +498,7 @@ columns["Level"] = {
 	JustifyH = "CENTER",
 	GetText = function(character) 
 		local level = DataStore:GetCharacterLevel(character)
-		if level ~= MAX_PLAYER_LEVEL and addon:GetOption("UI.Tabs.Summary.ShowLevelDecimals") then
+		if level ~= MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel] and addon:GetOption("UI.Tabs.Summary.ShowLevelDecimals") then
 			local rate = DataStore:GetXPRate(character)
 			level = format("%.1f", level + (rate/100))		-- show level as 98.4 if not level cap
 		end
@@ -554,7 +554,7 @@ columns["RestXP"] = {
 	Width = 65,
 	JustifyH = "CENTER",
 	GetText = function(character) 
-		if DataStore:GetCharacterLevel(character) == MAX_PLAYER_LEVEL then
+		if DataStore:GetCharacterLevel(character) == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel] then
 			return colors.white .. "0%"	-- show 0% at max level
 		end
 
@@ -568,7 +568,7 @@ columns["RestXP"] = {
 
 			local restXP = DataStore:GetRestXP(character)
 			-- if not restXP or restXP == 0 then return end
-			if not restXP or DataStore:GetCharacterLevel(character) == MAX_PLAYER_LEVEL then return end
+			if not restXP or DataStore:GetCharacterLevel(character) == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel] then return end
 
 			local tt = AltoTooltip
 			tt:ClearLines()

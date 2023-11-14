@@ -7,9 +7,39 @@
 			<KeyValue key="module" value="DataStore_Auctions" />
 		</KeyValues>
 		<Frames>
+			<Slider name="DataStoreAuctionsOptions_SliderLastVisit" inherits="OptionsSliderTemplate"  minValue="10" maxValue="30" defaultValue="15" valueStep="1">
+				<Size x="180" y="16" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="40" y="-40" />
+				</Anchors>
+				<Scripts>
+					<OnValueChanged>
+						local L = LibStub("AceLocale-3.0"):GetLocale("DataStore_Auctions")
+						
+						local name = self:GetName()
+						local value = math.floor(self:GetValue())
+						_G[name .. "Text"]:SetText(L["LAST_VISIT_CHECK_LABEL"] .. " (" .. value ..")");
+						DataStore:SetOption("DataStore_Auctions", "CheckLastVisitThreshold", value)
+					</OnValueChanged>
+				</Scripts>
+			</Slider>
+			
+			<CheckButton parentKey="CheckLastVisit" inherits="DataStoreToggleableOptionTemplate">
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="DataStoreAuctionsOptions_SliderLastVisit" relativePoint="BOTTOMLEFT" x="0" y="-20" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="option" value="CheckLastVisit" />
+					<KeyValue key="locLabel" value="LAST_VISIT_CHECK_LABEL" />
+					<KeyValue key="locTitle" value="LAST_VISIT_CHECK_TITLE" />
+					<KeyValue key="locEnabled" value="LAST_VISIT_CHECK_ENABLED" />
+					<KeyValue key="locDisabled" value="LAST_VISIT_CHECK_DISABLED" />
+				</KeyValues>
+			</CheckButton>
+		
 			<CheckButton parentKey="AutoClearExpiredItems" inherits="DataStoreToggleableOptionTemplate">
 				<Anchors> 
-					<Anchor point="TOPLEFT" x="40" y="-40" />
+					<Anchor point="TOP" relativeKey="$parent.CheckLastVisit" relativePoint="BOTTOM" x="0" y="-10" />
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="option" value="AutoClearExpiredItems" />

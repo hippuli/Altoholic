@@ -595,7 +595,7 @@ function addon:OnEnable()
 	
 	local _, _, arch = GetProfessions()
 
-	if arch then
+	if arch and RequestArtifactCompletionHistory then
 		--	ARTIFACT_HISTORY_READY deprecated in 8.0
 		-- addon:RegisterEvent("ARTIFACT_HISTORY_READY", OnArtifactHistoryReady)
 		RequestArtifactCompletionHistory()		-- this will trigger ARTIFACT_HISTORY_READY

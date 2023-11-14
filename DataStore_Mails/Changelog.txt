@@ -2,6 +2,10 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.11.06 (06/11/2023)
+
+- DataStore_Mails : removed the classic specific checks when registering events. (Thanks Technohunter)
+
 Version 2023.05.04 (04/05/2023)
 
 - DataStore_Mails : fixed the events triggered when opening the mailbox AGAIN !
