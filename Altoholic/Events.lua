@@ -218,8 +218,8 @@ local function ClearExpiredEvents()
 				end
 				
 				-- Calendar events 
-				num = DataStore:GetNumCalendarEvents(character) or 0 
-				for i = 1, num do
+				local num = DataStore:GetNumCalendarEvents(character) or 0 
+				for i = num, 1, -1 do
 					if DataStore:HasCalendarEventExpired(character, i) then
 						DataStore:DeleteCalendarEvent(character, i)
 					end

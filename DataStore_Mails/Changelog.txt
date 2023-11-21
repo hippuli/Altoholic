@@ -2,8 +2,13 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.11.17 (17/11/2023)
+
+- ToC Update for Vanilla
+
 Version 2023.11.06 (06/11/2023)
 
+- ToC Update for 10.2
 - DataStore_Mails : removed the classic specific checks when registering events. (Thanks Technohunter)
 
 Version 2023.05.04 (04/05/2023)

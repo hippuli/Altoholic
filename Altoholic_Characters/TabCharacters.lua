@@ -804,7 +804,7 @@ function ns:OnLoad()
 	local menuIcons = parent.MenuIcons
 	menuIcons.CharactersIcon.Icon:SetTexture(addon:GetCharacterIcon())
 	menuIcons.BagsIcon.Icon:SetTexture(bagIcon)
-	menuIcons.QuestsIcon.Icon:SetTexCoord(0, 0.75, 0, 0.75)
+	-- menuIcons.QuestsIcon.Icon:SetTexCoord(0, 0.75, 0, 0.75)
 		
 	addon:RegisterMessage("DATASTORE_RECIPES_SCANNED")
 	addon:RegisterMessage("DATASTORE_QUESTLOG_SCANNED")

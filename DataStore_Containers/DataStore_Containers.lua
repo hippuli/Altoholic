@@ -20,7 +20,7 @@ local commPrefix = "DS_Cont"		-- let's keep it a bit shorter than the addon name
 local MAIN_BANK_SLOTS = 100		-- bag id of the 28 main bank slots
 
 -- Constants usable for all versions
-local COMMON_NUM_BAG_SLOTS = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and NUM_BAG_SLOTS or NUM_BAG_SLOTS + 1
+local COMMON_NUM_BAG_SLOTS = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and NUM_BAG_SLOTS + 1 or NUM_BAG_SLOTS
 local MIN_BANK_SLOT = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and 6 or 5		-- Bags 6 - 12 are Bank as of 10.0
 local MAX_BANK_SLOT = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and 12 or 11
 
@@ -343,10 +343,8 @@ local function ScanBankSlotsInfo()
 	char.numBankSlots = numBankSlots
 	char.numFreeBankSlots = numFreeBankSlots
 	
-	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-		local numPurchasedSlots, isFull = GetNumBankSlots()
-		char.numPurchasedBankSlots = numPurchasedSlots
-	end
+	local numPurchasedSlots, isFull = GetNumBankSlots()
+	char.numPurchasedBankSlots = numPurchasedSlots
 end
 
 local function ScanGuildBankInfo()
@@ -590,7 +588,7 @@ local function OnVoidStorageTransferDone()
 end
 
 local function OnPlayerInteractionManagerFrameHide(event, interactionType)
-	if interactionType ~= Enum.PlayerInteractionType.VoidStorageBanker then return end
+	-- if interactionType ~= Enum.PlayerInteractionType.VoidStorageBanker then return end
 
 	-- Void storage specific
 	if interactionType == Enum.PlayerInteractionType.VoidStorageBanker then 

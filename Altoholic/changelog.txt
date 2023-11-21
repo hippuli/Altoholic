@@ -1,6 +1,19 @@
 Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
+3.4.009 (20/11/2023)
+
+- DataStore_Quests: The module is now shared between all versions of the game.
+- DataStore_Talents: The module is now shared between all versions of the game.
+- DataStore_Reputations: The module is now shared between all versions of the game.
+- The Quest Log icon now has the proper size.
+- DataStore_Containers: Fixed COMMON_NUM_BAG_SLOTS to be NUM_BAG_SLOTS + 1 for retail, and NUM_BAG_SLOTS for non-retail, instead of the opposite.
+
+3.4.008 (17/11/2023)
+
+- DataStore ToC Updates.
+- Events : fixed a Lua error when deleting an expired event.
+
 3.4.007 (14/11/2023)
 
 - DataStore_Containers: The module is now shared between all versions of the game.
