@@ -2,7 +2,6 @@ local L = LibStub("AceLocale-3.0"):NewLocale("DataStore_Crafts", "enUS", true, t
 
 if not L then return end
 
-L["Professions"] = true
 L["Secondary Skills"] = true
 L["Broadcast my profession links to guild at logon"] = true
 L["BROADCAST_PROFS_TITLE"] = "Broadcast Profession Links"

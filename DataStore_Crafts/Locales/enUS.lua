@@ -1,9 +1,4 @@
-local debug = false
---@debug@
-debug = true
---@end-debug@
-
-local L = LibStub("AceLocale-3.0"):NewLocale("DataStore_Crafts", "enUS", true, debug)
+local L = LibStub("AceLocale-3.0"):NewLocale("DataStore_Crafts", "enUS", true)
 
 L["Broadcast my profession links to guild at logon"] = true
 L["BROADCAST_PROFS_DISABLED"] = "Nothing will be sent at all. Disabling this option considerably decreases network traffic on the guild channel."

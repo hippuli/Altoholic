@@ -1,6 +1,11 @@
 Altoholic BC & WotLK Classic Changelog (dates in dd/mm/yyyy)
 =======================================
 
+3.4.010 (26/11/2023)
+
+- DataStore_Crafts: The module is now shared between all versions of the game.
+- This concludes the conversion of all DataStore modules to make them compatible with all versions.
+
 3.4.009 (20/11/2023)
 
 - DataStore_Quests: The module is now shared between all versions of the game.
